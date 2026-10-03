@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # COLABMATCH
 
 > Find Your Perfect Project Collaborators
@@ -104,3 +105,6 @@ cd client && npm run dev
 | GET | `/api/match/projects` | Recommended projects |
 | GET | `/api/match/collaborators/:id` | Recommended collaborators |
 | GET | `/api/dashboard` | Dashboard data |
+=======
+# ColabMatch
+>>>>>>> 26602573f1efc23c2baa30df6e519c8befc485b2
