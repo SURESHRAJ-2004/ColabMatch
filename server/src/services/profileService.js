@@ -5,13 +5,39 @@ import { NotFoundError } from '../utils/errors.js';
  * Get profile by user ID, including skills.
  */
 export async function getProfileById(userId) {
-  const { data: profile, error } = await supabase
+  let { data: profile, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', userId)
-    .single();
+    .maybeSingle();
 
-  if (error || !profile) {
+  // If profile does not exist yet, lazily create it from auth.users metadata
+  if (!profile) {
+    try {
+      const { data: authUserData } = await supabase.auth.admin.getUserById(userId);
+      if (authUserData?.user) {
+        const u = authUserData.user;
+        const initialProfile = {
+          id: userId,
+          full_name: u.user_metadata?.full_name || u.email?.split('@')[0] || 'User',
+          avatar_url: u.user_metadata?.avatar_url || '',
+        };
+        const { data: created, error: createError } = await supabase
+          .from('profiles')
+          .upsert(initialProfile, { onConflict: 'id' })
+          .select()
+          .single();
+
+        if (!createError && created) {
+          profile = created;
+        }
+      }
+    } catch (err) {
+      console.warn('Failed to lazily create profile:', err.message);
+    }
+  }
+
+  if (!profile) {
     throw new NotFoundError('Profile not found');
   }
 
@@ -21,7 +47,9 @@ export async function getProfileById(userId) {
     .select('skill_id, skills(id, name)')
     .eq('profile_id', userId);
 
-  profile.skills = profileSkills ? profileSkills.map((ps) => ps.skills) : [];
+  profile.skills = profileSkills
+    ? profileSkills.map((ps) => ps.skills).filter(Boolean)
+    : [];
 
   return profile;
 }
@@ -38,14 +66,36 @@ export async function updateProfile(userId, updates) {
   const filtered = {};
   for (const key of allowedFields) {
     if (updates[key] !== undefined) {
-      filtered[key] = updates[key];
+      // Convert empty strings for optional fields to null
+      if (typeof updates[key] === 'string' && updates[key].trim() === '' && key !== 'full_name') {
+        filtered[key] = null;
+      } else {
+        filtered[key] = updates[key];
+      }
     }
   }
 
+  // Ensure full_name is present if creating new profile row via upsert
+  if (!filtered.full_name) {
+    const { data: existing } = await supabase
+      .from('profiles')
+      .select('full_name')
+      .eq('id', userId)
+      .maybeSingle();
+
+    if (!existing) {
+      const { data: authUser } = await supabase.auth.admin.getUserById(userId);
+      filtered.full_name =
+        authUser?.user?.user_metadata?.full_name ||
+        authUser?.user?.email?.split('@')[0] ||
+        'User';
+    }
+  }
+
+  // Use upsert to handle both insert and update safely
   const { data, error } = await supabase
     .from('profiles')
-    .update(filtered)
-    .eq('id', userId)
+    .upsert({ id: userId, ...filtered, updated_at: new Date().toISOString() }, { onConflict: 'id' })
     .select()
     .single();
 
@@ -66,10 +116,13 @@ export async function setProfileSkills(userId, skillIds) {
     .delete()
     .eq('profile_id', userId);
 
-  if (skillIds.length === 0) return [];
+  // Deduplicate skill IDs
+  const uniqueSkillIds = [...new Set((skillIds || []).map(Number).filter((id) => !isNaN(id) && id > 0))];
+
+  if (uniqueSkillIds.length === 0) return [];
 
   // Insert new
-  const rows = skillIds.map((skillId) => ({
+  const rows = uniqueSkillIds.map((skillId) => ({
     profile_id: userId,
     skill_id: skillId,
   }));
@@ -83,7 +136,7 @@ export async function setProfileSkills(userId, skillIds) {
     throw new Error(`Failed to set skills: ${error.message}`);
   }
 
-  return data.map((ps) => ps.skills);
+  return (data || []).map((ps) => ps.skills).filter(Boolean);
 }
 
 /**

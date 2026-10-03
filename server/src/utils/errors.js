@@ -29,3 +29,11 @@ export class ConflictError extends AppError {
     this.name = 'ConflictError';
   }
 }
+
+export class BadRequestError extends AppError {
+  constructor(message = 'Bad request') {
+    super(message, 400);
+    this.name = 'BadRequestError';
+  }
+}
+

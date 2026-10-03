@@ -32,7 +32,11 @@ export default function ProfilePage() {
       setProfile(freshProfile);
       toast.success('Profile updated successfully');
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Failed to update profile');
+      const msg =
+        err.response?.data?.details?.[0]?.message ||
+        err.response?.data?.error ||
+        'Failed to update profile';
+      toast.error(msg);
     } finally {
       setSaving(false);
     }

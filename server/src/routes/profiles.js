@@ -14,11 +14,11 @@ router.put(
   [
     body('full_name').optional().trim().notEmpty().withMessage('Name cannot be empty'),
     body('experience_level')
-      .optional()
+      .optional({ values: 'falsy' })
       .isIn(['beginner', 'intermediate', 'advanced'])
       .withMessage('Invalid experience level'),
-    body('github_url').optional({ values: 'null' }).isURL().withMessage('Invalid GitHub URL'),
-    body('linkedin_url').optional({ values: 'null' }).isURL().withMessage('Invalid LinkedIn URL'),
+    body('github_url').optional({ values: 'falsy' }).isURL().withMessage('Invalid GitHub URL'),
+    body('linkedin_url').optional({ values: 'falsy' }).isURL().withMessage('Invalid LinkedIn URL'),
     validate,
   ],
   profileController.updateMyProfile
