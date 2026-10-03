@@ -21,15 +21,41 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({
-      ...form,
-      github_url: form.github_url || null,
-      linkedin_url: form.linkedin_url || null,
-    }, skills);
+    onSubmit(
+      {
+        ...form,
+        github_url: form.github_url || null,
+        linkedin_url: form.linkedin_url || null,
+      },
+      skills
+    );
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+      {/* Avatar Header Preview */}
+      <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+        <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-xs shrink-0">
+          {profile?.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt={form.full_name || 'Profile'}
+              className="w-14 h-14 object-cover"
+            />
+          ) : (
+            <span className="material-symbols-outlined text-slate-400 text-3xl">person</span>
+          )}
+        </div>
+        <div>
+          <h4 className="text-sm font-bold text-slate-900">
+            {form.full_name || 'Your Full Name'}
+          </h4>
+          <p className="text-xs text-slate-400 font-medium">
+            {profile?.college || 'Student Developer Profile'}
+          </p>
+        </div>
+      </div>
+
       <Input
         label="Full Name"
         id="full_name"
@@ -37,35 +63,35 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
         value={form.full_name}
         onChange={handleChange}
         required
-        placeholder="Your full name"
+        placeholder="e.g. Alex Morgan"
       />
 
       <Textarea
-        label="Bio"
+        label="Professional Bio"
         id="bio"
         name="bio"
         value={form.bio}
         onChange={handleChange}
-        placeholder="Tell others about yourself..."
+        placeholder="Introduce yourself, your academic background, areas of interest, and ideal project role..."
         rows={3}
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
-          label="College"
+          label="College / University"
           id="college"
           name="college"
           value={form.college}
           onChange={handleChange}
-          placeholder="Your college/university"
+          placeholder="e.g., Stanford University"
         />
         <Input
-          label="Course"
+          label="Degree / Major Course"
           id="course"
           name="course"
           value={form.course}
           onChange={handleChange}
-          placeholder="e.g., B.Tech CSE"
+          placeholder="e.g., B.S. Computer Science"
         />
       </div>
 
@@ -76,40 +102,48 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
         value={form.experience_level}
         onChange={handleChange}
         options={[
-          { value: 'beginner', label: 'Beginner' },
-          { value: 'intermediate', label: 'Intermediate' },
-          { value: 'advanced', label: 'Advanced' },
+          { value: 'beginner', label: 'Beginner (1st/2nd Year)' },
+          { value: 'intermediate', label: 'Intermediate (3rd/Final Year)' },
+          { value: 'advanced', label: 'Advanced (Experienced Builder)' },
         ]}
       />
 
       <div>
-        <label className="text-sm font-medium text-text-primary mb-2 block">Skills</label>
+        <label className="text-xs font-semibold text-slate-700 tracking-tight mb-2 block">
+          Skills & Technologies
+        </label>
         <SkillSelector selectedSkills={skills} onChange={setSkills} />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
-          label="GitHub URL"
+          label="GitHub Profile URL"
           id="github_url"
           name="github_url"
           type="url"
           value={form.github_url}
           onChange={handleChange}
           placeholder="https://github.com/username"
+          icon="code"
         />
         <Input
-          label="LinkedIn URL"
+          label="LinkedIn Profile URL"
           id="linkedin_url"
           name="linkedin_url"
           type="url"
           value={form.linkedin_url}
           onChange={handleChange}
           placeholder="https://linkedin.com/in/username"
+          icon="link"
         />
       </div>
 
       <div className="pt-2 flex justify-end">
-        <Button type="submit" loading={loading} className="w-full sm:w-auto justify-center cursor-pointer">
+        <Button
+          type="submit"
+          loading={loading}
+          className="w-full sm:w-auto px-6 py-2.5 text-sm"
+        >
           Save Profile
         </Button>
       </div>

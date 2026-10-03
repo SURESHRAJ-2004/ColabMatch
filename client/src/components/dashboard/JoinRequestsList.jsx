@@ -2,71 +2,75 @@ import { Link } from 'react-router-dom';
 import Badge from '../ui/Badge';
 import EmptyState from '../ui/EmptyState';
 
-const statusColors = { pending: 'yellow', accepted: 'green', rejected: 'red' };
+const statusColors = { pending: 'orange', accepted: 'green', rejected: 'red' };
 
 export default function JoinRequestsList({ requests, type = 'incoming' }) {
   if (!requests || requests.length === 0) {
     return (
       <EmptyState
-        icon="mail"
-        title={type === 'incoming' ? 'No pending requests' : 'No outgoing requests'}
-        description={type === 'incoming'
-          ? 'Join requests for your projects will appear here.'
-          : 'Your project join requests will appear here.'}
+        icon="mark_email_unread"
+        title={type === 'incoming' ? 'No pending requests' : 'No active applications'}
+        description={
+          type === 'incoming'
+            ? 'Incoming requests to join your project teams will appear here.'
+            : 'Applications you send to join other projects will appear here.'
+        }
       />
     );
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2.5">
       {requests.map((request) => (
         <div
           key={request.id}
-          className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border border-border bg-white gap-2 sm:gap-3"
+          className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl border border-slate-200/80 bg-white gap-3 shadow-xs hover:border-slate-300 transition-all"
         >
           <div className="flex items-center gap-3 min-w-0 flex-1">
             {type === 'incoming' && request.profiles && (
-              <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
+              <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
                 {request.profiles.avatar_url ? (
                   <img
                     src={request.profiles.avatar_url}
                     alt={request.profiles.full_name}
-                    className="w-8 h-8 rounded-full object-cover"
+                    className="w-9 h-9 rounded-full object-cover"
                   />
                 ) : (
-                  <span className="material-symbols-outlined text-primary-600 text-sm">person</span>
+                  <span className="material-symbols-outlined text-slate-500 text-base">person</span>
                 )}
               </div>
             )}
             <div className="min-w-0 flex-1">
               {type === 'incoming' ? (
                 <>
-                  <p className="text-sm font-medium text-text-primary truncate">
-                    {request.profiles?.full_name} wants to join
+                  <p className="text-sm font-bold text-slate-900 truncate">
+                    {request.profiles?.full_name}
                   </p>
-                  <p className="text-xs text-text-muted truncate">{request.projects?.title}</p>
+                  <p className="text-xs text-slate-400 font-medium truncate">
+                    Requested to join <span className="text-slate-700">{request.projects?.title}</span>
+                  </p>
                 </>
               ) : (
                 <>
-                  <p className="text-sm font-medium text-text-primary truncate">
+                  <p className="text-sm font-bold text-slate-900 truncate">
                     {request.projects?.title}
                   </p>
-                  <p className="text-xs text-text-muted truncate">
-                    by {request.projects?.profiles?.full_name || 'Owner'}
+                  <p className="text-xs text-slate-400 font-medium truncate">
+                    Led by {request.projects?.profiles?.full_name || 'Project Lead'}
                   </p>
                 </>
               )}
             </div>
           </div>
 
-          <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-border/50">
-            <Badge color={statusColors[request.status]}>
+          <div className="flex items-center justify-between sm:justify-end gap-2.5 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+            <Badge color={statusColors[request.status] || 'gray'} size="xs">
               {request.status}
             </Badge>
             {type === 'incoming' && request.status === 'pending' && (
               <Link
                 to={`/projects/${request.project_id || request.projects?.id}/requests`}
-                className="text-xs text-primary-600 hover:text-primary-700 font-medium px-2 py-0.5 rounded hover:bg-primary-50 transition-colors"
+                className="text-xs font-bold text-white bg-[#0f261f] hover:bg-[#18362c] px-3 py-1.5 rounded-xl transition-all shadow-xs"
               >
                 Review
               </Link>

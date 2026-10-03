@@ -24,7 +24,7 @@ export default function EditProjectPage() {
     setSaving(true);
     try {
       await api.put(`/projects/${id}`, formData);
-      toast.success('Project updated!');
+      toast.success('Project updated successfully!');
       navigate(`/projects/${id}`);
     } catch (err) {
       toast.error(err.response?.data?.error || 'Failed to update project');
@@ -34,22 +34,34 @@ export default function EditProjectPage() {
   };
 
   if (loading) {
-    return <PageLayout><Spinner className="py-20" /></PageLayout>;
+    return (
+      <PageLayout title="Edit Project" description="Loading project details...">
+        <Spinner className="py-24" />
+      </PageLayout>
+    );
   }
 
   if (!project) {
     return (
-      <PageLayout>
-        <p className="text-center text-text-secondary py-20">Project not found.</p>
+      <PageLayout title="Edit Project" description="Project not found">
+        <p className="text-center text-slate-500 py-24">Project not found or deleted.</p>
       </PageLayout>
     );
   }
 
   return (
-    <PageLayout>
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold text-text-primary mb-6">Edit Project</h1>
-        <div className="bg-white rounded-xl border border-border p-6">
+    <PageLayout
+      title="Edit Project"
+      description={`Update settings for "${project.title}"`}
+    >
+      <div className="max-w-2xl mx-auto overflow-x-hidden">
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="mb-6 pb-5 border-b border-slate-100">
+            <h2 className="text-lg font-bold text-slate-900 tracking-tight">Modify Project Settings</h2>
+            <p className="text-xs text-slate-400 font-medium mt-0.5">
+              Change project title, description, status, team capacity, and required skills.
+            </p>
+          </div>
           <ProjectForm
             project={project}
             onSubmit={handleSubmit}

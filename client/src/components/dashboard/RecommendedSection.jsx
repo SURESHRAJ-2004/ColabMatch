@@ -5,15 +5,15 @@ export default function RecommendedSection({ projects }) {
   if (!projects || projects.length === 0) {
     return (
       <EmptyState
-        icon="recommend"
-        title="No recommendations yet"
-        description="Add skills to your profile to get personalized project recommendations."
+        icon="auto_awesome"
+        title="No smart recommendations yet"
+        description="Add your tech skills and experience level in your profile to unlock personalized project matches."
       />
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
       {projects.map((project) => (
         <ProjectCard
           key={project.id}

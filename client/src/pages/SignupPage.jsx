@@ -24,7 +24,7 @@ export default function SignupPage() {
     setLoading(true);
     try {
       await signUp(email, password, fullName);
-      toast.success('Account created! Please check your email to confirm.');
+      toast.success('Account created successfully!');
       navigate('/dashboard');
     } catch (err) {
       toast.error(err.message || 'Sign up failed');
@@ -34,61 +34,76 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-alt px-4">
-      <div className="w-full max-w-sm">
-        {/* Header */}
+    <div className="min-h-screen flex items-center justify-center bg-[#f7f8fa] px-4 py-12">
+      <div className="w-full max-w-md">
+        {/* Brand Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 mb-4">
-            <span className="material-symbols-outlined text-primary-600 text-2xl">handshake</span>
-            <span className="text-lg font-bold text-text-primary">COLABMATCH</span>
+          <Link to="/" className="inline-flex items-center gap-2.5 mb-5 group">
+            <div className="w-10 h-10 rounded-2xl bg-[#0f261f] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+              <span className="material-symbols-outlined text-xl">join_inner</span>
+            </div>
+            <span className="text-xl font-extrabold text-slate-900 tracking-tight">
+              COLABMATCH
+            </span>
           </Link>
-          <h1 className="text-2xl font-bold text-text-primary">Create an account</h1>
-          <p className="text-sm text-text-secondary mt-1">Join COLABMATCH and find collaborators</p>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+            Create Your Account
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+            Join student developers finding collaborators and building projects
+          </p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl border border-border p-6 flex flex-col gap-4">
-          <Input
-            label="Full Name"
-            id="fullName"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            placeholder="Your full name"
-            required
-          />
+        {/* Card Form */}
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-7 sm:p-8 shadow-[0_2px_16px_rgba(0,0,0,0.03)]">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <Input
+              label="Full Name"
+              id="fullName"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="e.g. Alex Morgan"
+              icon="person"
+              required
+            />
 
-          <Input
-            label="Email"
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            required
-          />
+            <Input
+              label="Email Address"
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@university.edu"
+              icon="mail"
+              required
+            />
 
-          <Input
-            label="Password"
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="At least 6 characters"
-            required
-            minLength={6}
-          />
+            <Input
+              label="Password"
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Minimum 6 characters"
+              icon="lock"
+              required
+              minLength={6}
+            />
 
-          <Button type="submit" loading={loading} className="w-full">
-            Create Account
-          </Button>
-        </form>
+            <Button type="submit" loading={loading} className="w-full mt-2 py-3 text-sm font-bold">
+              Get Started Free
+            </Button>
+          </form>
 
-        <p className="text-center text-sm text-text-secondary mt-4">
-          Already have an account?{' '}
-          <Link to="/login" className="text-primary-600 hover:text-primary-700 font-medium">
-            Sign in
-          </Link>
-        </p>
+          <div className="mt-6 pt-5 border-t border-slate-100 text-center">
+            <p className="text-xs sm:text-sm text-slate-500 font-medium">
+              Already have an account?{' '}
+              <Link to="/login" className="text-[#0f261f] font-bold hover:underline">
+                Sign in
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

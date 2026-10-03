@@ -1,14 +1,28 @@
-import Navbar from './Navbar';
-import Footer from './Footer';
+import { useState } from 'react';
+import Sidebar from './Sidebar';
+import TopHeader from './TopHeader';
 
-export default function PageLayout({ children }) {
+export default function PageLayout({ children, title, description, actions }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    <div className="min-h-screen flex flex-col bg-surface-alt">
-      <Navbar />
-      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-8">
-        {children}
-      </main>
-      <Footer />
+    <div className="min-h-screen bg-[#f7f8fa] text-slate-900 flex overflow-x-hidden">
+      {/* 1. Sidebar (flex child on desktop, overlay drawer on mobile) */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* 2. Main Content Area: naturally occupies remaining space without overlapping */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
+        <TopHeader
+          onOpenSidebar={() => setSidebarOpen(true)}
+          title={title}
+          description={description}
+          actions={actions}
+        />
+
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

@@ -9,7 +9,7 @@ import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
 import toast from 'react-hot-toast';
 
-const statusColors = { pending: 'yellow', accepted: 'green', rejected: 'red' };
+const statusColors = { pending: 'orange', accepted: 'green', rejected: 'red' };
 
 export default function ManageRequestsPage() {
   const { id } = useParams();
@@ -40,98 +40,121 @@ export default function ManageRequestsPage() {
   };
 
   if (loading) {
-    return <PageLayout><Spinner className="py-20" /></PageLayout>;
+    return (
+      <PageLayout title="Manage Requests" description="Loading candidate requests...">
+        <Spinner className="py-24" />
+      </PageLayout>
+    );
   }
 
   return (
-    <PageLayout>
-      <div className="max-w-2xl mx-auto">
-        <div className="flex items-center gap-3 mb-6">
-          <Link
-            to={`/projects/${id}`}
-            className="p-2 rounded-lg hover:bg-surface-alt text-text-muted"
-          >
-            <span className="material-symbols-outlined">arrow_back</span>
-          </Link>
-          <h1 className="text-2xl font-bold text-text-primary">Join Requests</h1>
-        </div>
-
+    <PageLayout
+      title="Team Join Requests"
+      description="Review student applications and accept new collaborators into your project"
+      actions={
+        <Link
+          to={`/projects/${id}`}
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-xs"
+        >
+          <span className="material-symbols-outlined text-base">arrow_back</span>
+          Back to Project
+        </Link>
+      }
+    >
+      <div className="max-w-3xl mx-auto overflow-x-hidden">
         {requests.length === 0 ? (
           <EmptyState
-            icon="mail"
-            title="No join requests"
-            description="When students request to join your project, they'll appear here."
+            icon="mark_email_read"
+            title="No pending requests"
+            description="When peers request to join your project, their applications and messages will show up here for review."
           />
         ) : (
-          <div className="flex flex-col gap-3">
+          <div className="space-y-4">
             {requests.map((request) => (
               <div
                 key={request.id}
-                className="bg-white rounded-xl border border-border p-5"
+                className="bg-white rounded-[26px] border border-slate-200/80 p-5 sm:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)]"
               >
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-                  <div className="flex items-start gap-3 min-w-0 flex-1">
-                    <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
+                  <div className="flex items-start gap-3.5 min-w-0 flex-1">
+                    <div className="w-11 h-11 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden shadow-xs">
                       {request.profiles?.avatar_url ? (
                         <img
                           src={request.profiles.avatar_url}
                           alt={request.profiles.full_name}
-                          className="w-10 h-10 rounded-full object-cover"
+                          className="w-11 h-11 rounded-2xl object-cover"
                         />
                       ) : (
-                        <span className="material-symbols-outlined text-primary-600">person</span>
+                        <span className="material-symbols-outlined text-slate-500 text-xl">
+                          person
+                        </span>
                       )}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2 flex-wrap">
+                      <div className="flex items-center gap-2 flex-wrap mb-1">
                         <Link
                           to={`/profile/${request.profiles?.id}`}
-                          className="text-sm font-semibold text-text-primary hover:text-primary-600 truncate"
+                          className="text-sm font-bold text-slate-900 hover:text-[#0f261f] transition-colors truncate"
                         >
                           {request.profiles?.full_name}
                         </Link>
-                        <Badge color={statusColors[request.status]}>
+                        <Badge color={statusColors[request.status] || 'gray'} size="xs">
                           {request.status}
                         </Badge>
                       </div>
+
                       {request.profiles?.college && (
-                        <p className="text-xs text-text-muted mt-0.5 truncate">
-                          {request.profiles.college} • {request.profiles.experience_level}
+                        <p className="text-xs text-slate-400 font-medium truncate">
+                          {request.profiles.college}
+                          {request.profiles.experience_level && ` • ${request.profiles.experience_level} level`}
                         </p>
                       )}
+
+                      {/* Intro Message */}
                       {request.message && (
-                        <p className="text-sm text-text-secondary mt-2 break-words bg-surface-alt p-2.5 rounded-lg border border-border/50 text-xs sm:text-sm">{request.message}</p>
+                        <div className="mt-3 p-3 rounded-2xl bg-slate-50 border border-slate-200/70 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+                            Note from applicant:
+                          </p>
+                          {request.message}
+                        </div>
                       )}
-                      {/* Requester skills */}
+
+                      {/* Requester Skills */}
                       {request.requester_skills && request.requester_skills.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mt-2.5">
-                          {request.requester_skills.map((skill) => (
-                            <SkillBadge key={skill.id} name={skill.name} />
-                          ))}
+                        <div className="mt-3.5">
+                          <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+                            Applicant Skills:
+                          </p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {request.requester_skills.map((skill) => (
+                              <SkillBadge key={skill.id} name={skill.name} size="xs" />
+                            ))}
+                          </div>
                         </div>
                       )}
                     </div>
                   </div>
 
                   {request.status === 'pending' && (
-                    <div className="flex items-center gap-2 shrink-0 self-stretch sm:self-auto justify-end pt-3 sm:pt-0 border-t sm:border-t-0 border-border">
+                    <div className="flex items-center gap-2 shrink-0 self-stretch sm:self-auto justify-end pt-3 sm:pt-0 border-t sm:border-t-0 border-slate-100">
                       <Button
                         variant="success"
                         size="sm"
-                        className="flex-1 sm:flex-initial justify-center"
+                        className="flex-1 sm:flex-initial"
                         onClick={() => handleRespond(request.id, 'accept')}
                         loading={responding === request.id}
                       >
                         Accept
                       </Button>
                       <Button
-                        variant="danger"
+                        variant="secondary"
                         size="sm"
-                        className="flex-1 sm:flex-initial justify-center"
+                        className="flex-1 sm:flex-initial text-red-600 hover:text-red-700 hover:bg-red-50"
                         onClick={() => handleRespond(request.id, 'reject')}
                         loading={responding === request.id}
                       >
-                        Reject
+                        Decline
                       </Button>
                     </div>
                   )}

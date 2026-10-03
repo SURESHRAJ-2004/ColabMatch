@@ -30,7 +30,7 @@ export default function ProfilePage() {
       // Refetch to get updated skills
       const { data: freshProfile } = await api.get('/profiles/me');
       setProfile(freshProfile);
-      toast.success('Profile updated successfully');
+      toast.success('Profile updated successfully!');
     } catch (err) {
       const msg =
         err.response?.data?.details?.[0]?.message ||
@@ -44,17 +44,25 @@ export default function ProfilePage() {
 
   if (loading) {
     return (
-      <PageLayout>
-        <Spinner className="py-20" />
+      <PageLayout title="My Profile" description="Loading profile...">
+        <Spinner className="py-24" />
       </PageLayout>
     );
   }
 
   return (
-    <PageLayout>
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold text-text-primary mb-6">Edit Profile</h1>
-        <div className="bg-white rounded-xl border border-border p-6">
+    <PageLayout
+      title="My Profile"
+      description="Manage your student developer persona, tech skills, and contact links"
+    >
+      <div className="max-w-2xl mx-auto overflow-x-hidden">
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="mb-6 pb-5 border-b border-slate-100">
+            <h2 className="text-lg font-bold text-slate-900 tracking-tight">Profile Details</h2>
+            <p className="text-xs text-slate-400 font-medium mt-0.5">
+              Keep your profile accurate to get matched with high-compatibility teams.
+            </p>
+          </div>
           <ProfileForm
             profile={profile}
             onSubmit={handleSubmit}

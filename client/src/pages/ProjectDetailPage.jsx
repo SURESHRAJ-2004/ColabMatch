@@ -52,7 +52,7 @@ export default function ProjectDetailPage() {
     setJoining(true);
     try {
       await api.post(`/projects/${id}/join`, { message: joinMessage });
-      toast.success('Join request sent!');
+      toast.success('Join request sent successfully!');
       setJoinModal(false);
       setJoinMessage('');
     } catch (err) {
@@ -74,7 +74,7 @@ export default function ProjectDetailPage() {
   };
 
   const handleRemoveMember = async (profileId) => {
-    if (!window.confirm('Remove this member?')) return;
+    if (!window.confirm('Remove this member from team?')) return;
     try {
       await api.delete(`/projects/${id}/members/${profileId}`);
       toast.success('Member removed');
@@ -85,104 +85,125 @@ export default function ProjectDetailPage() {
   };
 
   if (loading) {
-    return <PageLayout><Spinner className="py-20" /></PageLayout>;
+    return (
+      <PageLayout title="Project Details" description="Loading project...">
+        <Spinner className="py-24" />
+      </PageLayout>
+    );
   }
 
   if (!project) {
     return (
-      <PageLayout>
-        <p className="text-center text-text-secondary py-20">Project not found.</p>
+      <PageLayout title="Project Not Found" description="The requested project was not found">
+        <p className="text-center text-slate-500 py-24">Project not found or was removed.</p>
       </PageLayout>
     );
   }
 
   return (
-    <PageLayout>
-      <div className="max-w-3xl mx-auto">
-        {/* Header */}
-        <div className="bg-white rounded-xl border border-border p-5 sm:p-6 mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
+    <PageLayout
+      title={project.title}
+      description={`Led by ${project.owner?.full_name || 'Project Lead'}`}
+      actions={
+        <div className="flex items-center gap-2">
+          {isOwner && (
+            <>
+              <Link
+                to={`/projects/${id}/edit`}
+                className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors shadow-xs"
+                title="Edit Project"
+              >
+                <span className="material-symbols-outlined text-lg">edit</span>
+              </Link>
+              <Link
+                to={`/projects/${id}/requests`}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-800 transition-colors shadow-xs"
+                title="Manage Requests"
+              >
+                <span className="material-symbols-outlined text-base">mail</span>
+                Requests
+              </Link>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className="p-2 rounded-xl border border-red-200 bg-white hover:bg-red-50 text-red-600 transition-colors cursor-pointer shadow-xs"
+                title="Delete Project"
+              >
+                <span className="material-symbols-outlined text-lg">delete</span>
+              </button>
+            </>
+          )}
+
+          {!isOwner && !isMember && project.status === 'open' && (
+            <Button onClick={() => setJoinModal(true)}>
+              <span className="material-symbols-outlined text-base">person_add</span>
+              Request to Join
+            </Button>
+          )}
+
+          {isMember && !isOwner && (
+            <Badge color="green" size="md">Team Member</Badge>
+          )}
+        </div>
+      }
+    >
+      <div className="max-w-4xl mx-auto space-y-6 overflow-x-hidden">
+        {/* Project Hero Card */}
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2 flex-wrap mb-1">
-                <h1 className="text-xl sm:text-2xl font-bold text-text-primary break-words">{project.title}</h1>
-                <Badge color={statusColors[project.status]}>
-                  {statusLabels[project.status]}
+              <div className="flex items-center gap-2.5 flex-wrap mb-2">
+                <Badge color={statusColors[project.status] || 'gray'}>
+                  {statusLabels[project.status] || project.status}
                 </Badge>
+                {project.category && (
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">
+                    <span className="material-symbols-outlined text-xs">category</span>
+                    {project.category}
+                  </span>
+                )}
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">
+                  <span className="material-symbols-outlined text-xs">group</span>
+                  {project.team_size || 4} Total Seats
+                </span>
               </div>
-              <p className="text-sm text-text-secondary">
-                by{' '}
+
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug break-words">
+                {project.title}
+              </h1>
+
+              <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
+                Project Lead:{' '}
                 <Link
                   to={`/profile/${project.owner?.id}`}
-                  className="text-primary-600 hover:text-primary-700 font-medium"
+                  className="text-slate-800 font-bold hover:underline"
                 >
                   {project.owner?.full_name}
                 </Link>
+                {project.owner?.college && ` • ${project.owner.college}`}
               </p>
-            </div>
-
-            <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto flex-wrap">
-              {isOwner && (
-                <>
-                  <Link
-                    to={`/projects/${id}/edit`}
-                    className="p-2 rounded-lg hover:bg-surface-alt text-text-muted transition-colors"
-                    title="Edit project"
-                  >
-                    <span className="material-symbols-outlined">edit</span>
-                  </Link>
-                  <Link
-                    to={`/projects/${id}/requests`}
-                    className="p-2 rounded-lg hover:bg-surface-alt text-text-muted transition-colors"
-                    title="Manage requests"
-                  >
-                    <span className="material-symbols-outlined">mail</span>
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={handleDelete}
-                    className="p-2 rounded-lg hover:bg-red-50 text-text-muted hover:text-danger transition-colors cursor-pointer"
-                    title="Delete project"
-                  >
-                    <span className="material-symbols-outlined">delete</span>
-                  </button>
-                </>
-              )}
-              {!isOwner && !isMember && project.status === 'open' && (
-                <Button onClick={() => setJoinModal(true)}>
-                  <span className="material-symbols-outlined text-lg">person_add</span>
-                  Request to Join
-                </Button>
-              )}
-              {isMember && !isOwner && (
-                <Badge color="green">Member</Badge>
-              )}
             </div>
           </div>
 
           {/* Description */}
           {project.description && (
-            <p className="text-sm text-text-secondary mb-4">{project.description}</p>
+            <div className="mb-6">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+                About this Project
+              </h3>
+              <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal whitespace-pre-line">
+                {project.description}
+              </p>
+            </div>
           )}
 
-          {/* Meta */}
-          <div className="flex flex-wrap gap-4 text-sm text-text-muted mb-4">
-            {project.category && (
-              <span className="flex items-center gap-1">
-                <span className="material-symbols-outlined text-base">category</span>
-                {project.category}
-              </span>
-            )}
-            <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined text-base">group</span>
-              Team size: {project.team_size}
-            </span>
-          </div>
-
-          {/* Skills */}
+          {/* Required Skills */}
           {project.skills && project.skills.length > 0 && (
-            <div>
-              <h3 className="text-sm font-semibold text-text-primary mb-2">Required Skills</h3>
-              <div className="flex flex-wrap gap-1.5">
+            <div className="pt-5 border-t border-slate-100">
+              <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
+                Required Technical Skills
+              </h3>
+              <div className="flex flex-wrap gap-2">
                 {project.skills.map((skill) => (
                   <SkillBadge key={skill.id} name={skill.name} />
                 ))}
@@ -191,11 +212,19 @@ export default function ProjectDetailPage() {
           )}
         </div>
 
-        {/* Members */}
-        <div className="bg-white rounded-xl border border-border p-6 mb-6">
-          <h2 className="text-base font-semibold text-text-primary mb-4">
-            Team Members ({project.members?.length || 0})
-          </h2>
+        {/* Team Members Card */}
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-base font-bold text-slate-900 tracking-tight">
+                Team Members ({project.members?.length || 0} / {project.team_size || 4})
+              </h2>
+              <p className="text-xs text-slate-400 font-medium mt-0.5">
+                Current collaborators on this initiative
+              </p>
+            </div>
+          </div>
+
           {project.members && project.members.length > 0 ? (
             <MemberList
               members={project.members}
@@ -204,45 +233,51 @@ export default function ProjectDetailPage() {
               onRemove={handleRemoveMember}
             />
           ) : (
-            <p className="text-sm text-text-muted">No members yet.</p>
+            <p className="text-sm text-slate-400">No members have joined yet.</p>
           )}
         </div>
 
         {/* Recommended Collaborators (for project owner) */}
         {isOwner && (
-          <div className="bg-white rounded-xl border border-border p-6">
+          <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary-600">auto_awesome</span>
-                <h2 className="text-base font-semibold text-text-primary">
-                  Recommended Collaborators
-                </h2>
+                <span className="material-symbols-outlined text-[#0f261f]">auto_awesome</span>
+                <div>
+                  <h2 className="text-base font-bold text-slate-900 tracking-tight">
+                    Recommended Collaborators
+                  </h2>
+                  <p className="text-xs text-slate-400 font-medium">
+                    Candidates who possess the skills required for this project
+                  </p>
+                </div>
               </div>
               <Link
                 to="/matches"
-                className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+                className="text-xs font-bold text-[#0f261f] hover:underline flex items-center gap-1"
               >
-                Explore more matches
+                More matches
+                <span className="material-symbols-outlined text-sm">arrow_forward</span>
               </Link>
             </div>
 
             {loadingMatches ? (
-              <Spinner className="py-6" size="sm" />
+              <Spinner className="py-8" size="sm" />
             ) : recommendedCollaborators.length === 0 ? (
-              <p className="text-sm text-text-muted py-2">
-                No matching student candidates found yet based on required skills.
+              <p className="text-xs sm:text-sm text-slate-400 py-3">
+                No matching candidate profiles found yet. Add more required skills to your project to improve match results.
               </p>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {recommendedCollaborators.slice(0, 4).map((candidate) => (
                   <div
                     key={candidate.id}
-                    className="p-3 rounded-lg border border-border bg-surface-alt flex flex-col justify-between"
+                    className="p-4 rounded-2xl border border-slate-200/80 bg-slate-50/60 hover:bg-slate-50 transition-all flex flex-col justify-between"
                   >
                     <div>
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
+                      <div className="flex items-start justify-between gap-2 mb-2.5">
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
                             {candidate.avatar_url ? (
                               <img
                                 src={candidate.avatar_url}
@@ -250,21 +285,32 @@ export default function ProjectDetailPage() {
                                 className="w-8 h-8 rounded-full object-cover"
                               />
                             ) : (
-                              <span className="material-symbols-outlined text-primary-600 text-sm">person</span>
+                              <span className="material-symbols-outlined text-slate-500 text-sm">
+                                person
+                              </span>
                             )}
                           </div>
                           <div className="truncate">
-                            <h4 className="text-xs font-semibold text-text-primary truncate">
+                            <h4 className="text-xs font-bold text-slate-900 truncate">
                               {candidate.full_name}
                             </h4>
                             {candidate.college && (
-                              <p className="text-[11px] text-text-muted truncate">
+                              <p className="text-[11px] text-slate-400 truncate">
                                 {candidate.college}
                               </p>
                             )}
                           </div>
                         </div>
-                        <Badge color={candidate.match_score >= 75 ? 'green' : candidate.match_score >= 50 ? 'blue' : 'gray'}>
+                        <Badge
+                          color={
+                            candidate.match_score >= 75
+                              ? 'green'
+                              : candidate.match_score >= 50
+                              ? 'blue'
+                              : 'gray'
+                          }
+                          size="xs"
+                        >
                           {candidate.match_score}%
                         </Badge>
                       </div>
@@ -272,7 +318,10 @@ export default function ProjectDetailPage() {
                       {candidate.matching_skills && candidate.matching_skills.length > 0 && (
                         <div className="flex flex-wrap gap-1 mb-2">
                           {candidate.matching_skills.slice(0, 3).map((s) => (
-                            <span key={s.id} className="text-[10px] bg-white border border-border px-1.5 py-0.5 rounded text-text-secondary">
+                            <span
+                              key={s.id}
+                              className="text-[10px] font-semibold bg-white border border-slate-200 px-2 py-0.5 rounded-full text-slate-600"
+                            >
                               {s.name}
                             </span>
                           ))}
@@ -282,7 +331,7 @@ export default function ProjectDetailPage() {
 
                     <Link
                       to={`/profile/${candidate.id}`}
-                      className="mt-2 text-center text-xs text-primary-600 hover:text-primary-700 font-medium py-1 rounded bg-white border border-border hover:bg-primary-50 transition-colors"
+                      className="mt-3 text-center text-xs font-bold text-[#0f261f] py-1.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 transition-colors shadow-xs"
                     >
                       View Profile
                     </Link>
@@ -295,19 +344,19 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Join Request Modal */}
-      <Modal isOpen={joinModal} onClose={() => setJoinModal(false)} title="Request to Join">
+      <Modal isOpen={joinModal} onClose={() => setJoinModal(false)} title="Request to Join Team">
         <div className="flex flex-col gap-4">
-          <p className="text-sm text-text-secondary">
-            Send a message to the project owner explaining why you'd like to join.
+          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">
+            Introduce yourself to the project lead and briefly mention your relevant technical background or how you'd like to contribute.
           </p>
           <Textarea
             id="join-message"
-            placeholder="I'd like to join because..."
+            placeholder="Hi, I'm passionate about this topic and experienced with the required tech stack..."
             value={joinMessage}
             onChange={(e) => setJoinMessage(e.target.value)}
-            rows={3}
+            rows={4}
           />
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-2.5 pt-2">
             <Button variant="secondary" onClick={() => setJoinModal(false)}>
               Cancel
             </Button>
