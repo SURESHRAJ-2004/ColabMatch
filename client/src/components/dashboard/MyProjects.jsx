@@ -30,17 +30,19 @@ export default function MyProjects({ projects }) {
         <Link
           key={project.id}
           to={`/projects/${project.id}`}
-          className="flex items-center justify-between p-3 rounded-lg border border-border bg-white hover:bg-surface-alt transition-colors"
+          className="flex items-center justify-between p-3 rounded-lg border border-border bg-white hover:bg-surface-alt transition-colors gap-3"
         >
-          <div>
-            <p className="text-sm font-medium text-text-primary">{project.title}</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-medium text-text-primary truncate">{project.title}</p>
             {project.category && (
-              <p className="text-xs text-text-muted">{project.category}</p>
+              <p className="text-xs text-text-muted truncate">{project.category}</p>
             )}
           </div>
-          <Badge color={statusColors[project.status]}>
-            {statusLabels[project.status]}
-          </Badge>
+          <div className="shrink-0">
+            <Badge color={statusColors[project.status]}>
+              {statusLabels[project.status]}
+            </Badge>
+          </div>
         </Link>
       ))}
     </div>

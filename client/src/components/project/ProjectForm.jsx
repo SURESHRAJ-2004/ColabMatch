@@ -102,9 +102,11 @@ export default function ProjectForm({ project, onSubmit, loading, submitLabel = 
         <SkillSelector selectedSkills={skills} onChange={setSkills} />
       </div>
 
-      <Button type="submit" loading={loading} className="self-end">
-        {submitLabel}
-      </Button>
+      <div className="pt-2 flex justify-end">
+        <Button type="submit" loading={loading} className="w-full sm:w-auto justify-center cursor-pointer">
+          {submitLabel}
+        </Button>
+      </div>
     </form>
   );
 }

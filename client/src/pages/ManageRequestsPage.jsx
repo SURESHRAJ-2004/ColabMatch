@@ -69,8 +69,8 @@ export default function ManageRequestsPage() {
                 key={request.id}
                 className="bg-white rounded-xl border border-border p-5"
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-start gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                  <div className="flex items-start gap-3 min-w-0 flex-1">
                     <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
                       {request.profiles?.avatar_url ? (
                         <img
@@ -82,11 +82,11 @@ export default function ManageRequestsPage() {
                         <span className="material-symbols-outlined text-primary-600">person</span>
                       )}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <Link
                           to={`/profile/${request.profiles?.id}`}
-                          className="text-sm font-semibold text-text-primary hover:text-primary-600"
+                          className="text-sm font-semibold text-text-primary hover:text-primary-600 truncate"
                         >
                           {request.profiles?.full_name}
                         </Link>
@@ -95,16 +95,16 @@ export default function ManageRequestsPage() {
                         </Badge>
                       </div>
                       {request.profiles?.college && (
-                        <p className="text-xs text-text-muted mt-0.5">
+                        <p className="text-xs text-text-muted mt-0.5 truncate">
                           {request.profiles.college} • {request.profiles.experience_level}
                         </p>
                       )}
                       {request.message && (
-                        <p className="text-sm text-text-secondary mt-2">{request.message}</p>
+                        <p className="text-sm text-text-secondary mt-2 break-words bg-surface-alt p-2.5 rounded-lg border border-border/50 text-xs sm:text-sm">{request.message}</p>
                       )}
                       {/* Requester skills */}
                       {request.requester_skills && request.requester_skills.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mt-2">
+                        <div className="flex flex-wrap gap-1 mt-2.5">
                           {request.requester_skills.map((skill) => (
                             <SkillBadge key={skill.id} name={skill.name} />
                           ))}
@@ -114,10 +114,11 @@ export default function ManageRequestsPage() {
                   </div>
 
                   {request.status === 'pending' && (
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex items-center gap-2 shrink-0 self-stretch sm:self-auto justify-end pt-3 sm:pt-0 border-t sm:border-t-0 border-border">
                       <Button
                         variant="success"
                         size="sm"
+                        className="flex-1 sm:flex-initial justify-center"
                         onClick={() => handleRespond(request.id, 'accept')}
                         loading={responding === request.id}
                       >
@@ -126,6 +127,7 @@ export default function ManageRequestsPage() {
                       <Button
                         variant="danger"
                         size="sm"
+                        className="flex-1 sm:flex-initial justify-center"
                         onClick={() => handleRespond(request.id, 'reject')}
                         loading={responding === request.id}
                       >

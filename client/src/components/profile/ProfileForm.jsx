@@ -108,9 +108,11 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
         />
       </div>
 
-      <Button type="submit" loading={loading} className="self-end">
-        Save Profile
-      </Button>
+      <div className="pt-2 flex justify-end">
+        <Button type="submit" loading={loading} className="w-full sm:w-auto justify-center cursor-pointer">
+          Save Profile
+        </Button>
+      </div>
     </form>
   );
 }

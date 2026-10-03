@@ -1,0 +1,17 @@
+{
+  "name": "colabmatch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "COLABMATCH — Student collaboration and project matching platform",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "npm --prefix server run dev",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start"
+  }
+}

@@ -9,10 +9,10 @@ export default function MemberList({ members, ownerId, currentUserId, onRemove }
         return (
           <div
             key={member.profile_id || profile.id}
-            className="flex items-center justify-between p-3 rounded-lg border border-border bg-white"
+            className="flex items-center justify-between p-3 rounded-lg border border-border bg-white gap-3"
           >
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
+              <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
@@ -23,20 +23,20 @@ export default function MemberList({ members, ownerId, currentUserId, onRemove }
                   <span className="material-symbols-outlined text-primary-600 text-base">person</span>
                 )}
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <Link
                   to={`/profile/${profile.id}`}
-                  className="text-sm font-medium text-text-primary hover:text-primary-600"
+                  className="text-sm font-medium text-text-primary hover:text-primary-600 truncate block"
                 >
                   {profile.full_name}
                 </Link>
                 {profile.college && (
-                  <p className="text-xs text-text-muted">{profile.college}</p>
+                  <p className="text-xs text-text-muted truncate">{profile.college}</p>
                 )}
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 shrink-0">
               <Badge color={member.role === 'owner' ? 'yellow' : 'blue'}>
                 {member.role}
               </Badge>
@@ -44,8 +44,9 @@ export default function MemberList({ members, ownerId, currentUserId, onRemove }
                 member.role !== 'owner' &&
                 onRemove && (
                   <button
+                    type="button"
                     onClick={() => onRemove(member.profile_id || profile.id)}
-                    className="p-1 rounded hover:bg-red-50 text-text-muted hover:text-danger transition-colors"
+                    className="p-1 rounded hover:bg-red-50 text-text-muted hover:text-danger transition-colors cursor-pointer"
                     title="Remove member"
                   >
                     <span className="material-symbols-outlined text-lg">person_remove</span>

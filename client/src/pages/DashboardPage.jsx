@@ -38,18 +38,18 @@ export default function DashboardPage() {
   return (
     <PageLayout>
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">
+          <h1 className="text-xl sm:text-2xl font-bold text-text-primary">
             Welcome, {data.profile?.full_name || 'Student'}
           </h1>
-          <p className="text-sm text-text-secondary mt-0.5">
+          <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
             Here's an overview of your activity
           </p>
         </div>
         <Link
           to="/projects/new"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors"
+          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors self-start sm:self-auto shrink-0 shadow-xs"
         >
           <span className="material-symbols-outlined text-lg">add</span>
           New Project

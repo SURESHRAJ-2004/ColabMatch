@@ -37,16 +37,16 @@ export default function ProjectsPage() {
 
   return (
     <PageLayout>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Projects</h1>
-          <p className="text-sm text-text-secondary mt-0.5">
+          <h1 className="text-xl sm:text-2xl font-bold text-text-primary">Projects</h1>
+          <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
             {total} project{total !== 1 ? 's' : ''} available
           </p>
         </div>
         <Link
           to="/projects/new"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors"
+          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors self-start sm:self-auto shrink-0 shadow-xs"
         >
           <span className="material-symbols-outlined text-lg">add</span>
           New Project
@@ -65,7 +65,7 @@ export default function ProjectsPage() {
             description="Try adjusting your filters or create a new project."
           />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {projects.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}

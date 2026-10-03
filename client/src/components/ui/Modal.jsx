@@ -13,8 +13,10 @@ export default function Modal({ isOpen, onClose, title, children }) {
         <div className="flex items-center justify-between p-4 border-b border-border">
           <h2 className="text-lg font-semibold text-text-primary">{title}</h2>
           <button
+            type="button"
+            aria-label="Close modal"
             onClick={onClose}
-            className="p-1 rounded-lg hover:bg-surface-alt text-text-muted"
+            className="p-1 rounded-lg hover:bg-surface-alt text-text-muted hover:text-text-primary transition-colors cursor-pointer"
           >
             <span className="material-symbols-outlined">close</span>
           </button>

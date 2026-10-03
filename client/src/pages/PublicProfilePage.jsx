@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import api from '../services/api';
 import PageLayout from '../components/layout/PageLayout';
 import Badge from '../components/ui/Badge';
@@ -41,17 +41,17 @@ export default function PublicProfilePage() {
       <div className="max-w-2xl mx-auto">
         <div className="bg-white rounded-xl border border-border p-6">
           {/* Header */}
-          <div className="flex items-start gap-4 mb-6">
-            <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+            <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
               {profile.avatar_url ? (
                 <img src={profile.avatar_url} alt={profile.full_name} className="w-16 h-16 rounded-full object-cover" />
               ) : (
                 <span className="material-symbols-outlined text-primary-600 text-3xl">person</span>
               )}
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl font-bold text-text-primary">{profile.full_name}</h1>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2 flex-wrap mb-1">
+                <h1 className="text-xl font-bold text-text-primary break-words">{profile.full_name}</h1>
                 {profile.experience_level && (
                   <Badge color={experienceColors[profile.experience_level]}>
                     {profile.experience_level}
@@ -62,7 +62,7 @@ export default function PublicProfilePage() {
                 <p className="text-sm text-text-secondary">{profile.college}</p>
               )}
               {profile.course && (
-                <p className="text-xs text-text-muted">{profile.course}</p>
+                <p className="text-xs text-text-muted mt-0.5">{profile.course}</p>
               )}
             </div>
           </div>

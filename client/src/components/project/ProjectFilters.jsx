@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import SkillBadge from '../ui/SkillBadge';
 import { Select } from '../ui/Input';
 
 const categories = [
@@ -32,9 +31,9 @@ export default function ProjectFilters({ filters, onChange }) {
 
   return (
     <div className="bg-white rounded-xl border border-border p-4">
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
         {/* Search */}
-        <form onSubmit={handleSearchSubmit} className="flex-1 flex gap-2">
+        <form onSubmit={handleSearchSubmit} className="sm:col-span-2 lg:col-span-6 flex gap-2">
           <div className="relative flex-1">
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted text-lg">
               search
@@ -44,34 +43,38 @@ export default function ProjectFilters({ filters, onChange }) {
               placeholder="Search projects..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-2 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full pl-9 pr-3 py-2 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
             />
           </div>
           <button
             type="submit"
-            className="px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors"
+            className="px-4 py-2 rounded-lg bg-primary-600 text-white text-sm font-medium hover:bg-primary-700 transition-colors shrink-0 shadow-xs cursor-pointer"
           >
             Search
           </button>
         </form>
 
         {/* Category filter */}
-        <Select
-          id="filter-category"
-          value={filters.category || ''}
-          onChange={(e) => onChange({ ...filters, category: e.target.value })}
-          options={categories}
-          className="sm:w-44"
-        />
+        <div className="sm:col-span-1 lg:col-span-3">
+          <Select
+            id="filter-category"
+            value={filters.category || ''}
+            onChange={(e) => onChange({ ...filters, category: e.target.value })}
+            options={categories}
+            className="w-full"
+          />
+        </div>
 
         {/* Status filter */}
-        <Select
-          id="filter-status"
-          value={filters.status || ''}
-          onChange={(e) => onChange({ ...filters, status: e.target.value })}
-          options={statuses}
-          className="sm:w-36"
-        />
+        <div className="sm:col-span-1 lg:col-span-3">
+          <Select
+            id="filter-status"
+            value={filters.status || ''}
+            onChange={(e) => onChange({ ...filters, status: e.target.value })}
+            options={statuses}
+            className="w-full"
+          />
+        </div>
       </div>
     </div>
   );

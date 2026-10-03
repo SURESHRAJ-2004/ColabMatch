@@ -22,11 +22,11 @@ export default function JoinRequestsList({ requests, type = 'incoming' }) {
       {requests.map((request) => (
         <div
           key={request.id}
-          className="flex items-center justify-between p-3 rounded-lg border border-border bg-white"
+          className="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg border border-border bg-white gap-2 sm:gap-3"
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 min-w-0 flex-1">
             {type === 'incoming' && request.profiles && (
-              <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
                 {request.profiles.avatar_url ? (
                   <img
                     src={request.profiles.avatar_url}
@@ -38,35 +38,35 @@ export default function JoinRequestsList({ requests, type = 'incoming' }) {
                 )}
               </div>
             )}
-            <div>
+            <div className="min-w-0 flex-1">
               {type === 'incoming' ? (
                 <>
-                  <p className="text-sm font-medium text-text-primary">
+                  <p className="text-sm font-medium text-text-primary truncate">
                     {request.profiles?.full_name} wants to join
                   </p>
-                  <p className="text-xs text-text-muted">{request.projects?.title}</p>
+                  <p className="text-xs text-text-muted truncate">{request.projects?.title}</p>
                 </>
               ) : (
                 <>
-                  <p className="text-sm font-medium text-text-primary">
+                  <p className="text-sm font-medium text-text-primary truncate">
                     {request.projects?.title}
                   </p>
-                  <p className="text-xs text-text-muted">
-                    by {request.projects?.profiles?.full_name}
+                  <p className="text-xs text-text-muted truncate">
+                    by {request.projects?.profiles?.full_name || 'Owner'}
                   </p>
                 </>
               )}
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-border/50">
             <Badge color={statusColors[request.status]}>
               {request.status}
             </Badge>
             {type === 'incoming' && request.status === 'pending' && (
               <Link
                 to={`/projects/${request.project_id || request.projects?.id}/requests`}
-                className="text-xs text-primary-600 hover:text-primary-700 font-medium"
+                className="text-xs text-primary-600 hover:text-primary-700 font-medium px-2 py-0.5 rounded hover:bg-primary-50 transition-colors"
               >
                 Review
               </Link>

@@ -15,6 +15,7 @@ import CreateProjectPage from './pages/CreateProjectPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
 import EditProjectPage from './pages/EditProjectPage';
 import ManageRequestsPage from './pages/ManageRequestsPage';
+import MatchesPage from './pages/MatchesPage';
 
 export default function App() {
   return (
@@ -39,6 +40,9 @@ export default function App() {
           {/* Protected routes */}
           <Route path="/dashboard" element={
             <ProtectedRoute><DashboardPage /></ProtectedRoute>
+          } />
+          <Route path="/matches" element={
+            <ProtectedRoute><MatchesPage /></ProtectedRoute>
           } />
           <Route path="/profile" element={
             <ProtectedRoute><ProfilePage /></ProtectedRoute>

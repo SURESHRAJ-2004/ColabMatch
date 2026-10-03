@@ -21,7 +21,7 @@ export default function ProfilePage() {
     setSaving(true);
     try {
       // Update profile
-      const { data: updatedProfile } = await api.put('/profiles/me', formData);
+      await api.put('/profiles/me', formData);
 
       // Update skills
       const skillIds = skills.map((s) => s.id);

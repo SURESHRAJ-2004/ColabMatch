@@ -55,15 +55,19 @@ export default function SkillSelector({ selectedSkills = [], onChange }) {
       )}
 
       {/* Available skills */}
-      <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto">
-        {filtered.map((skill) => (
-          <SkillBadge
-            key={skill.id}
-            name={skill.name}
-            selected={selectedSkills.some((s) => s.id === skill.id)}
-            onClick={() => toggleSkill(skill)}
-          />
-        ))}
+      <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-2.5 rounded-lg border border-border bg-surface-alt/40">
+        {filtered.length === 0 ? (
+          <p className="text-xs text-text-muted py-2 w-full text-center">No matching skills found.</p>
+        ) : (
+          filtered.map((skill) => (
+            <SkillBadge
+              key={skill.id}
+              name={skill.name}
+              selected={selectedSkills.some((s) => s.id === skill.id)}
+              onClick={() => toggleSkill(skill)}
+            />
+          ))
+        )}
       </div>
     </div>
   );

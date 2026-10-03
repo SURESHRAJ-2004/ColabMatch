@@ -1,4 +1,7 @@
 import 'dotenv/config';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -15,11 +18,15 @@ import joinRequestRoutes from './routes/joinRequests.js';
 import matchRoutes from './routes/match.js';
 import dashboardRoutes from './routes/dashboard.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const clientDistPath = path.resolve(__dirname, '../../client/dist');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // ── Global Middleware ──
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true,
@@ -40,9 +47,23 @@ app.use('/api', authenticateToken, joinRequestRoutes);
 app.use('/api/match', authenticateToken, matchRoutes);
 app.use('/api/dashboard', authenticateToken, dashboardRoutes);
 
-// ── 404 Handler ──
+// ── Serve Client UI in Production or when built ──
+if (fs.existsSync(clientDistPath)) {
+  app.use(express.static(clientDistPath));
+}
+
+// ── 404 Handler for API ──
 app.use('/api/{*splat}', (req, res) => {
   res.status(404).json({ error: 'Endpoint not found' });
+});
+
+// ── SPA Fallback for all other routes ──
+app.get('{*splat}', (req, res, next) => {
+  const indexPath = path.join(clientDistPath, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    return res.sendFile(indexPath);
+  }
+  next();
 });
 
 // ── Global Error Handler ──

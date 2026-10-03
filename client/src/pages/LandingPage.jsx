@@ -19,21 +19,21 @@ export default function LandingPage() {
             </div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-bold text-text-primary mb-4 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary mb-4 leading-tight">
             Find Your Perfect{' '}
             <span className="text-primary-600">Project Collaborators</span>
           </h1>
 
-          <p className="text-lg text-text-secondary mb-8 max-w-lg mx-auto">
+          <p className="text-base sm:text-lg text-text-secondary mb-8 max-w-lg mx-auto">
             Match your skills with the right projects. Build teams, ship projects,
             and make your final-year project a success.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-xs sm:max-w-none mx-auto">
             {user ? (
               <Link
                 to="/dashboard"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors shadow-xs"
               >
                 Go to Dashboard
                 <span className="material-symbols-outlined text-lg">arrow_forward</span>
@@ -42,14 +42,14 @@ export default function LandingPage() {
               <>
                 <Link
                   to="/signup"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors shadow-xs"
                 >
                   Get Started
                   <span className="material-symbols-outlined text-lg">arrow_forward</span>
                 </Link>
                 <Link
                   to="/login"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border text-text-primary font-medium hover:bg-surface-alt transition-colors"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-border text-text-primary font-medium hover:bg-surface-alt transition-colors"
                 >
                   Login
                 </Link>
