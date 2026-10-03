@@ -40,19 +40,9 @@ COLABMATCH/
 2. Go to SQL Editor and run `database/migration.sql`
 3. Copy your project URL, anon key, service role key, and JWT secret from Settings > API
 
-### 2. Configure environment variables
 
-```bash
-# Client
-cp client/.env.example client/.env
-# Fill in VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY
 
-# Server
-cp server/.env.example server/.env
-# Fill in SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_JWT_SECRET
-```
-
-### 3. Install dependencies
+### 2. Install dependencies
 
 ```bash
 # Client
@@ -62,7 +52,7 @@ cd client && npm install
 cd server && npm install
 ```
 
-### 4. Run in development
+### 3. Run in development
 
 ```bash
 # Terminal 1 - Backend
@@ -107,4 +97,4 @@ cd client && npm run dev
 | GET | `/api/dashboard` | Dashboard data |
 =======
 # ColabMatch
->>>>>>> 26602573f1efc23c2baa30df6e519c8befc485b2
+
