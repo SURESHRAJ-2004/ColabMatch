@@ -48,7 +48,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card Form */}
-        <div className="bg-white rounded-[28px] border border-slate-200/80 p-7 sm:p-8 shadow-[0_2px_16px_rgba(0,0,0,0.03)]">
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-7 sm:p-8 shadow-2xs">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <Input
               label="Email Address"
@@ -72,7 +72,12 @@ export default function LoginPage() {
               required
             />
 
-            <Button type="submit" loading={loading} className="w-full mt-2 py-3 text-sm font-bold">
+            <Button
+              type="submit"
+              loading={loading}
+              size="lg"
+              className="w-full mt-2 font-bold shadow-xs"
+            >
               Sign In to Workspace
             </Button>
           </form>

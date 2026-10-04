@@ -42,7 +42,7 @@ export default function ProjectsPage() {
       actions={
         <Link
           to="/projects/new"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shadow-xs"
+          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shadow-xs"
         >
           <span className="material-symbols-outlined text-base">add</span>
           New Project
@@ -63,7 +63,7 @@ export default function ProjectsPage() {
             >
               <Link
                 to="/projects/new"
-                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0f261f] text-white text-xs font-bold hover:bg-[#18362c] transition-all shadow-xs mt-2"
+                className="inline-flex items-center gap-1.5 h-10 px-4 mt-2 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shadow-xs"
               >
                 <span className="material-symbols-outlined text-base">add</span>
                 Create This Project

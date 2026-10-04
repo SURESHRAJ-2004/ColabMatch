@@ -44,7 +44,7 @@ export default function DashboardPage() {
       actions={
         <Link
           to="/projects/new"
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shadow-xs"
+          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shadow-xs"
         >
           <span className="material-symbols-outlined text-base">add</span>
           New Project
@@ -53,8 +53,8 @@ export default function DashboardPage() {
     >
       <div className="space-y-6 sm:space-y-8 overflow-x-hidden">
         {/* Welcome Hero Banner */}
-        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
-          <div className="relative z-10 max-w-xl">
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-2xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="max-w-xl">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/70 mb-3.5">
               <span className="material-symbols-outlined text-[14px]">verified</span>
               Final-Year Collaboration Hub
@@ -67,17 +67,17 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto relative z-10">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto shrink-0">
             <Link
               to="/matches"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shadow-xs"
+              className="inline-flex items-center justify-center gap-2 h-10 px-5 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shadow-xs"
             >
               <span className="material-symbols-outlined text-base">auto_awesome</span>
               View Matches
             </Link>
             <Link
               to="/projects"
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-all"
+              className="inline-flex items-center justify-center gap-2 h-10 px-4 rounded-xl bg-slate-50 border border-slate-200 text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-all shadow-2xs"
             >
               Browse Projects
             </Link>
@@ -90,7 +90,7 @@ export default function DashboardPage() {
         {/* 2-Column Split: Active Projects & Incoming Requests */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Active Projects Card */}
-          <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+          <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 shadow-2xs flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-base font-bold text-slate-900 tracking-tight">My Projects</h3>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Incoming Requests Card */}
-          <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+          <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 shadow-2xs flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-base font-bold text-slate-900 tracking-tight">Incoming Join Requests</h3>
@@ -147,7 +147,7 @@ export default function DashboardPage() {
 
         {/* Outgoing Applications Section */}
         {data.outgoingRequests?.length > 0 && (
-          <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 shadow-2xs">
             <div className="mb-4">
               <h3 className="text-base font-bold text-slate-900 tracking-tight">My Sent Applications</h3>
               <p className="text-xs text-slate-400 font-medium mt-0.5">Projects you requested to join</p>

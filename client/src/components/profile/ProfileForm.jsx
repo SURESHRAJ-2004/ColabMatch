@@ -32,10 +32,10 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      {/* Avatar Header Preview */}
-      <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
-        <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-xs shrink-0">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+      {/* 1. Header Profile Banner Preview */}
+      <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
+        <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-2xs shrink-0">
           {profile?.avatar_url ? (
             <img
               src={profile.avatar_url}
@@ -46,103 +46,128 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
             <span className="material-symbols-outlined text-slate-400 text-3xl">person</span>
           )}
         </div>
-        <div>
-          <h4 className="text-sm font-bold text-slate-900">
+        <div className="min-w-0 flex-1">
+          <h4 className="text-base font-bold text-slate-900 truncate">
             {form.full_name || 'Your Full Name'}
           </h4>
-          <p className="text-xs text-slate-400 font-medium">
-            {profile?.college || 'Student Developer Profile'}
+          <p className="text-xs text-slate-500 font-medium truncate mt-0.5">
+            {form.college || profile?.college || 'Student Developer Profile'}
           </p>
         </div>
       </div>
 
-      <Input
-        label="Full Name"
-        id="full_name"
-        name="full_name"
-        value={form.full_name}
-        onChange={handleChange}
-        required
-        placeholder="e.g. Alex Morgan"
-      />
+      {/* 2. Personal Information Group */}
+      <div className="space-y-4">
+        <div className="pb-1 border-b border-slate-100">
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            Personal & Academic Information
+          </h3>
+        </div>
 
-      <Textarea
-        label="Professional Bio"
-        id="bio"
-        name="bio"
-        value={form.bio}
-        onChange={handleChange}
-        placeholder="Introduce yourself, your academic background, areas of interest, and ideal project role..."
-        rows={3}
-      />
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Input
-          label="College / University"
-          id="college"
-          name="college"
-          value={form.college}
+          label="Full Name"
+          id="full_name"
+          name="full_name"
+          value={form.full_name}
           onChange={handleChange}
-          placeholder="e.g., Stanford University"
+          required
+          placeholder="e.g. Alex Morgan"
         />
-        <Input
-          label="Degree / Major Course"
-          id="course"
-          name="course"
-          value={form.course}
+
+        <Textarea
+          label="Professional Bio"
+          id="bio"
+          name="bio"
+          value={form.bio}
           onChange={handleChange}
-          placeholder="e.g., B.S. Computer Science"
+          placeholder="Introduce yourself, your academic background, areas of interest, and ideal project role..."
+          rows={3}
+        />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Input
+            label="College / University"
+            id="college"
+            name="college"
+            value={form.college}
+            onChange={handleChange}
+            placeholder="e.g. Stanford University"
+          />
+          <Input
+            label="Degree / Major Course"
+            id="course"
+            name="course"
+            value={form.course}
+            onChange={handleChange}
+            placeholder="e.g. B.S. Computer Science"
+          />
+        </div>
+
+        <Select
+          label="Experience Level"
+          id="experience_level"
+          name="experience_level"
+          value={form.experience_level}
+          onChange={handleChange}
+          options={[
+            { value: 'beginner', label: 'Beginner (1st/2nd Year)' },
+            { value: 'intermediate', label: 'Intermediate (3rd/Final Year)' },
+            { value: 'advanced', label: 'Advanced (Experienced Builder)' },
+          ]}
         />
       </div>
 
-      <Select
-        label="Experience Level"
-        id="experience_level"
-        name="experience_level"
-        value={form.experience_level}
-        onChange={handleChange}
-        options={[
-          { value: 'beginner', label: 'Beginner (1st/2nd Year)' },
-          { value: 'intermediate', label: 'Intermediate (3rd/Final Year)' },
-          { value: 'advanced', label: 'Advanced (Experienced Builder)' },
-        ]}
-      />
-
-      <div>
-        <label className="text-xs font-semibold text-slate-700 tracking-tight mb-2 block">
-          Skills & Technologies
-        </label>
+      {/* 3. Technical Skills Group */}
+      <div className="space-y-3">
+        <div className="pb-1 border-b border-slate-100">
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            Technical Stack & Skills
+          </h3>
+        </div>
         <SkillSelector selectedSkills={skills} onChange={setSkills} />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Input
-          label="GitHub Profile URL"
-          id="github_url"
-          name="github_url"
-          type="url"
-          value={form.github_url}
-          onChange={handleChange}
-          placeholder="https://github.com/username"
-          icon="code"
-        />
-        <Input
-          label="LinkedIn Profile URL"
-          id="linkedin_url"
-          name="linkedin_url"
-          type="url"
-          value={form.linkedin_url}
-          onChange={handleChange}
-          placeholder="https://linkedin.com/in/username"
-          icon="link"
-        />
+      {/* 4. Portfolio & Profiles Group */}
+      <div className="space-y-4">
+        <div className="pb-1 border-b border-slate-100">
+          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+            Online Presence & Links
+          </h3>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Input
+            label="GitHub Profile URL"
+            id="github_url"
+            name="github_url"
+            type="url"
+            value={form.github_url}
+            onChange={handleChange}
+            placeholder="https://github.com/username"
+            icon="code"
+          />
+          <Input
+            label="LinkedIn Profile URL"
+            id="linkedin_url"
+            name="linkedin_url"
+            type="url"
+            value={form.linkedin_url}
+            onChange={handleChange}
+            placeholder="https://linkedin.com/in/username"
+            icon="link"
+          />
+        </div>
       </div>
 
-      <div className="pt-2 flex justify-end">
+      {/* 5. Save Button Footer */}
+      <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <p className="text-xs text-slate-400 font-medium order-2 sm:order-1 text-center sm:text-left">
+          Skills and details are used directly by the matching algorithm.
+        </p>
         <Button
           type="submit"
           loading={loading}
-          className="w-full sm:w-auto px-6 py-2.5 text-sm"
+          size="lg"
+          className="w-full sm:w-auto px-8 font-bold order-1 sm:order-2 shadow-xs"
         >
           Save Profile
         </Button>

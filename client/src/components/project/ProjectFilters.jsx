@@ -37,12 +37,12 @@ export default function ProjectFilters({ filters, onChange }) {
   const hasActiveFilters = Boolean(filters.search || filters.category || filters.status);
 
   return (
-    <div className="bg-white rounded-[26px] border border-slate-200/80 p-4 sm:p-5 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 items-center">
+    <div className="bg-white rounded-[26px] border border-slate-200/80 p-4 sm:p-5 shadow-2xs">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
         {/* Search */}
-        <form onSubmit={handleSearchSubmit} className="sm:col-span-2 lg:col-span-6 flex gap-2">
+        <form onSubmit={handleSearchSubmit} className="md:col-span-6 flex gap-2">
           <div className="relative flex-1">
-            <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg">
+            <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none">
               search
             </span>
             <input
@@ -50,19 +50,19 @@ export default function ProjectFilters({ filters, onChange }) {
               placeholder="Search projects by title, description..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200/90 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f261f]/10 focus:border-[#0f261f] bg-white text-slate-900 placeholder:text-slate-400 shadow-[0_1px_2px_rgba(0,0,0,0.02)]"
+              className="w-full h-10.5 pl-10 pr-3.5 rounded-xl border border-slate-200/90 text-sm focus:outline-none focus:ring-2 focus:ring-[#0f261f]/15 focus:border-[#0f261f] bg-white text-slate-900 placeholder:text-slate-400 shadow-xs"
             />
           </div>
           <button
             type="submit"
-            className="px-4 py-2.5 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shrink-0 shadow-xs cursor-pointer"
+            className="h-10.5 px-4 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shrink-0 shadow-xs cursor-pointer select-none active:scale-[0.98]"
           >
             Search
           </button>
         </form>
 
         {/* Category filter */}
-        <div className="sm:col-span-1 lg:col-span-3">
+        <div className="md:col-span-3">
           <Select
             id="filter-category"
             value={filters.category || ''}
@@ -72,8 +72,8 @@ export default function ProjectFilters({ filters, onChange }) {
           />
         </div>
 
-        {/* Status filter */}
-        <div className="sm:col-span-1 lg:col-span-3 flex items-center gap-2">
+        {/* Status filter & Clear action */}
+        <div className="md:col-span-3 flex items-center gap-2">
           <div className="flex-1">
             <Select
               id="filter-status"
@@ -88,7 +88,7 @@ export default function ProjectFilters({ filters, onChange }) {
               type="button"
               onClick={handleClear}
               title="Reset filters"
-              className="p-2.5 rounded-xl border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer shrink-0"
+              className="h-10.5 w-10.5 rounded-xl border border-slate-200 text-slate-400 hover:text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer shrink-0 flex items-center justify-center shadow-2xs"
               aria-label="Clear filters"
             >
               <span className="material-symbols-outlined text-lg">restart_alt</span>

@@ -47,7 +47,7 @@ export default function PublicProfilePage() {
       actions={
         <Link
           to="/matches"
-          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-xs"
+          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-2xs"
         >
           <span className="material-symbols-outlined text-base">arrow_back</span>
           Back to Matches
@@ -56,10 +56,10 @@ export default function PublicProfilePage() {
     >
       <div className="max-w-3xl mx-auto space-y-6 overflow-x-hidden">
         {/* Main Profile Card */}
-        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-2xs">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-5 pb-6 border-b border-slate-100">
-            <div className="w-[72px] h-[72px] rounded-[22px] bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden shadow-xs">
+            <div className="w-[72px] h-[72px] rounded-[22px] bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
               {profile.avatar_url ? (
                 <img
                   src={profile.avatar_url}
@@ -127,7 +127,7 @@ export default function PublicProfilePage() {
                 href={profile.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors shadow-xs"
+                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors shadow-2xs"
               >
                 <span className="material-symbols-outlined text-base">code</span>
                 GitHub Profile
@@ -138,7 +138,7 @@ export default function PublicProfilePage() {
                 href={profile.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors shadow-xs"
+                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors shadow-2xs"
               >
                 <span className="material-symbols-outlined text-base">work</span>
                 LinkedIn Profile

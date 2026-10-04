@@ -8,7 +8,7 @@ function SidebarContent({ onClose }) {
 
   const navLinks = [
     { to: '/dashboard', label: 'Dashboard', icon: 'grid_view' },
-    { to: '/matches', label: 'Matches', icon: 'auto_awesome' },
+    { to: '/matches', label: 'Smart Matches', icon: 'auto_awesome' },
     { to: '/projects', label: 'Projects', icon: 'folder_open' },
     { to: '/profile', label: 'My Profile', icon: 'person' },
   ];
@@ -39,7 +39,7 @@ function SidebarContent({ onClose }) {
   const avatarUrl = user?.user_metadata?.avatar_url;
 
   return (
-    <div className="flex flex-col justify-between h-full bg-white overflow-y-auto">
+    <div className="flex flex-col justify-between h-full bg-white select-none">
       {/* Top Section */}
       <div>
         {/* Brand Header */}
@@ -76,7 +76,7 @@ function SidebarContent({ onClose }) {
         </div>
 
         {/* Navigation Items */}
-        <div className="px-3.5 py-5 space-y-1.5">
+        <div className="px-3.5 py-5 space-y-1">
           <p className="px-3 pb-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
             Navigation
           </p>
@@ -87,7 +87,7 @@ function SidebarContent({ onClose }) {
                 key={item.to}
                 to={item.to}
                 onClick={onClose}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-sm font-medium transition-all duration-150 ${
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
                   active
                     ? 'bg-[#0f261f] text-white shadow-xs font-semibold'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
@@ -108,11 +108,11 @@ function SidebarContent({ onClose }) {
       </div>
 
       {/* Middle Action */}
-      <div className="px-4 py-2">
+      <div className="px-3.5 py-2">
         <Link
           to="/projects/new"
           onClick={onClose}
-          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs font-bold text-slate-800 hover:bg-slate-100 hover:border-slate-300 transition-all shadow-xs"
+          className="w-full h-10 flex items-center justify-center gap-2 px-4 rounded-xl bg-slate-50 border border-slate-200/90 text-xs font-bold text-slate-800 hover:bg-slate-100 hover:border-slate-300 transition-all shadow-2xs"
         >
           <span className="material-symbols-outlined text-base text-[#0f261f]">add</span>
           Create Project
@@ -120,14 +120,14 @@ function SidebarContent({ onClose }) {
       </div>
 
       {/* Bottom User Profile Section */}
-      <div className="p-3.5 border-t border-slate-100 bg-slate-50/50">
-        <div className="flex items-center justify-between p-2 rounded-2xl bg-white border border-slate-200/70 shadow-xs">
+      <div className="p-3.5 border-t border-slate-100 bg-slate-50/40">
+        <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs">
           <Link
             to="/profile"
             onClick={onClose}
-            className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-2.5 min-w-0 flex-1 hover:opacity-85 transition-opacity"
           >
-            <div className="w-8 h-8 rounded-full bg-slate-200/80 flex items-center justify-center overflow-hidden shrink-0 border border-slate-200">
+            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center overflow-hidden shrink-0 border border-slate-200">
               {avatarUrl ? (
                 <img
                   src={avatarUrl}
@@ -154,7 +154,7 @@ function SidebarContent({ onClose }) {
             type="button"
             onClick={handleSignOut}
             title="Sign out"
-            className="w-7 h-7 rounded-xl flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors ml-1 cursor-pointer shrink-0"
+            className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors ml-1 cursor-pointer shrink-0"
             aria-label="Sign out"
           >
             <span className="material-symbols-outlined text-base">logout</span>
@@ -168,22 +168,20 @@ function SidebarContent({ onClose }) {
 export default function Sidebar({ isOpen, onClose }) {
   return (
     <>
-      {/* ── Mobile / Tablet Drawer (only visible when isOpen on screen < lg) ── */}
+      {/* Mobile Drawer (visible on < lg when isOpen) */}
       {isOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop */}
           <div
             className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
             onClick={onClose}
           />
-          {/* Slide-out Panel */}
-          <aside className="fixed inset-y-0 left-0 w-64 max-w-[80vw] bg-white shadow-2xl flex flex-col z-50 border-r border-slate-200 animate-in slide-in-from-left duration-200">
+          <aside className="fixed inset-y-0 left-0 w-64 max-w-[80vw] bg-white shadow-2xl flex flex-col z-50 border-r border-slate-200">
             <SidebarContent onClose={onClose} />
           </aside>
         </div>
       )}
 
-      {/* ── Desktop Permanent Sidebar (in standard flex flow, sticky to viewport) ── */}
+      {/* Desktop Sticky Sidebar */}
       <aside className="hidden lg:flex w-64 shrink-0 flex-col h-screen sticky top-0 bg-white border-r border-slate-200/80 z-20 overflow-hidden">
         <SidebarContent />
       </aside>

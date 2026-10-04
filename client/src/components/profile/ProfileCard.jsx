@@ -10,11 +10,11 @@ const experienceColors = {
 
 export default function ProfileCard({ profile, matchScore }) {
   return (
-    <div className="bg-white rounded-[26px] border border-slate-200/80 p-5 sm:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:border-slate-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-200 flex flex-col justify-between">
+    <div className="bg-white rounded-[26px] border border-slate-200/80 p-5 sm:p-6 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all duration-200 flex flex-col justify-between">
       <div>
         <div className="flex items-start gap-3.5 mb-4">
           {/* Avatar */}
-          <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200 overflow-hidden shadow-xs">
+          <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200 overflow-hidden shadow-2xs">
             {profile.avatar_url ? (
               <img
                 src={profile.avatar_url}
@@ -87,13 +87,13 @@ export default function ProfileCard({ profile, matchScore }) {
         )}
       </div>
 
-      <div className="pt-3.5 border-t border-slate-100 mt-auto flex items-center justify-between">
+      <div className="pt-3.5 border-t border-slate-100 mt-auto">
         <Link
           to={`/profile/${profile.id}`}
-          className="text-xs font-bold text-[#0f261f] hover:underline flex items-center gap-1"
+          className="w-full h-10 inline-flex items-center justify-center gap-1.5 px-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900 text-xs font-bold transition-all shadow-2xs"
         >
+          <span className="material-symbols-outlined text-sm">visibility</span>
           View Profile
-          <span className="material-symbols-outlined text-sm">arrow_forward</span>
         </Link>
       </div>
     </div>

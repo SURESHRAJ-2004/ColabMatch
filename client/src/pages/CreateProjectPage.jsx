@@ -27,8 +27,8 @@ export default function CreateProjectPage() {
       title="Create New Project"
       description="Post your initiative, specify team size, and list required skills"
     >
-      <div className="max-w-2xl mx-auto overflow-x-hidden">
-        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+      <div className="max-w-3xl mx-auto overflow-x-hidden">
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-2xs">
           <div className="mb-6 pb-5 border-b border-slate-100">
             <h2 className="text-lg font-bold text-slate-900 tracking-tight">Project Information</h2>
             <p className="text-xs text-slate-400 font-medium mt-0.5">

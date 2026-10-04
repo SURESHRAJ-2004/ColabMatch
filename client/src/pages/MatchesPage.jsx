@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import api from '../services/api';
 import PageLayout from '../components/layout/PageLayout';
 import ProjectCard from '../components/project/ProjectCard';
-import Badge from '../components/ui/Badge';
 import SkillBadge from '../components/ui/SkillBadge';
 import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
@@ -57,30 +56,30 @@ export default function MatchesPage() {
       title="Smart Matches"
       description="Discover projects and collaborators ranked by skill compatibility"
       actions={
-        <div className="flex items-center rounded-2xl bg-white border border-slate-200/90 p-1 shadow-xs shrink-0">
+        <div className="flex items-center rounded-xl bg-white border border-slate-200/90 p-1 shadow-2xs shrink-0">
           <button
             type="button"
             onClick={() => setTab('projects')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap select-none ${
               tab === 'projects'
                 ? 'bg-[#0f261f] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             <span className="material-symbols-outlined text-[16px]">folder_special</span>
-            <span className="hidden xs:inline sm:inline">Projects</span>
+            <span>Projects</span>
           </button>
           <button
             type="button"
             onClick={() => setTab('collaborators')}
-            className={`flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer whitespace-nowrap select-none ${
               tab === 'collaborators'
                 ? 'bg-[#0f261f] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             <span className="material-symbols-outlined text-[16px]">group_add</span>
-            <span className="hidden xs:inline sm:inline">Collaborators</span>
+            <span>Collaborators</span>
           </button>
         </div>
       }
@@ -99,7 +98,7 @@ export default function MatchesPage() {
               >
                 <Link
                   to="/profile"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 mt-4 rounded-xl bg-[#0f261f] text-white text-xs font-bold hover:bg-[#18362c] transition-all shadow-xs"
+                  className="inline-flex items-center gap-1.5 h-10 px-4 mt-2 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shadow-xs"
                 >
                   <span className="material-symbols-outlined text-base">edit</span>
                   Update Profile Skills
@@ -128,7 +127,7 @@ export default function MatchesPage() {
               >
                 <Link
                   to="/projects/new"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 mt-4 rounded-xl bg-[#0f261f] text-white text-xs font-bold hover:bg-[#18362c] transition-all shadow-xs"
+                  className="inline-flex items-center gap-1.5 h-10 px-4 mt-2 rounded-xl bg-[#0f261f] text-white text-xs sm:text-sm font-bold hover:bg-[#18362c] transition-all shadow-xs"
                 >
                   <span className="material-symbols-outlined text-base">add</span>
                   Create Project
@@ -137,7 +136,7 @@ export default function MatchesPage() {
             ) : (
               <div className="space-y-6">
                 {/* Project selector card */}
-                <div className="bg-white rounded-[26px] border border-slate-200/80 p-5 sm:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="bg-white rounded-[26px] border border-slate-200/80 p-5 sm:p-6 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="w-full md:w-auto">
                     <label
                       htmlFor="project-select"
@@ -150,7 +149,7 @@ export default function MatchesPage() {
                         id="project-select"
                         value={selectedProjectId}
                         onChange={(e) => setSelectedProjectId(e.target.value)}
-                        className="w-full md:w-96 px-3.5 py-2.5 bg-slate-50 border border-slate-200/90 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0f261f]/10 focus:border-[#0f261f] cursor-pointer appearance-none shadow-xs"
+                        className="w-full md:w-96 h-10.5 px-3.5 pr-10 bg-slate-50 border border-slate-200/90 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0f261f]/15 focus:border-[#0f261f] cursor-pointer appearance-none shadow-xs"
                       >
                         {myProjects.map((p) => (
                           <option key={p.id} value={p.id}>
@@ -158,13 +157,13 @@ export default function MatchesPage() {
                           </option>
                         ))}
                       </select>
-                      <span className="material-symbols-outlined absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none">
+                      <span className="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg pointer-events-none">
                         expand_more
                       </span>
                     </div>
                   </div>
                   <div className="text-xs text-slate-500 font-medium">
-                    Ranking peers based on skills specified in this project
+                    Ranking candidate peers based on required skills in this project
                   </div>
                 </div>
 
@@ -181,13 +180,13 @@ export default function MatchesPage() {
                     {recommendedCollaborators.map((candidate) => (
                       <div
                         key={candidate.id}
-                        className="bg-white rounded-[26px] border border-slate-200/80 p-5 sm:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:border-slate-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-200 flex flex-col justify-between"
+                        className="bg-white rounded-[26px] border border-slate-200/80 p-5 sm:p-6 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all duration-200 flex flex-col justify-between"
                       >
                         <div>
                           {/* Header */}
                           <div className="flex items-start justify-between gap-3 mb-4">
                             <div className="flex items-center gap-3 min-w-0 flex-1">
-                              <div className="w-11 h-11 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden shadow-xs">
+                              <div className="w-11 h-11 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
                                 {candidate.avatar_url ? (
                                   <img
                                     src={candidate.avatar_url}
@@ -252,7 +251,7 @@ export default function MatchesPage() {
                         <div className="pt-3.5 border-t border-slate-100 mt-auto">
                           <Link
                             to={`/profile/${candidate.id}`}
-                            className="w-full inline-flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900 text-xs font-bold transition-all"
+                            className="w-full h-10 inline-flex items-center justify-center gap-1.5 px-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900 text-xs font-bold transition-all shadow-2xs"
                           >
                             <span className="material-symbols-outlined text-sm">visibility</span>
                             View Candidate Profile

@@ -40,7 +40,7 @@ export default function ProjectForm({ project, onSubmit, loading, submitLabel = 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <Input
         label="Project Title"
         id="title"
@@ -48,16 +48,16 @@ export default function ProjectForm({ project, onSubmit, loading, submitLabel = 
         value={form.title}
         onChange={handleChange}
         required
-        placeholder="Enter your project title"
+        placeholder="e.g. AI-Powered Autonomous Rover"
       />
 
       <Textarea
-        label="Description"
+        label="Project Overview & Goals"
         id="description"
         name="description"
         value={form.description}
         onChange={handleChange}
-        placeholder="Describe your project, goals, and what you're looking for..."
+        placeholder="Describe the initiative, architecture, key deliverables, and ideal collaborator contributions..."
         rows={4}
       />
 
@@ -71,7 +71,7 @@ export default function ProjectForm({ project, onSubmit, loading, submitLabel = 
           options={categories}
         />
         <Input
-          label="Team Size"
+          label="Team Capacity (Target Members)"
           id="team_size"
           name="team_size"
           type="number"
@@ -84,26 +84,33 @@ export default function ProjectForm({ project, onSubmit, loading, submitLabel = 
 
       {project && (
         <Select
-          label="Status"
+          label="Project Status"
           id="status"
           name="status"
           value={form.status}
           onChange={handleChange}
           options={[
-            { value: 'open', label: 'Open' },
-            { value: 'in_progress', label: 'In Progress' },
-            { value: 'completed', label: 'Completed' },
+            { value: 'open', label: 'Open (Recruiting)' },
+            { value: 'in_progress', label: 'In Progress (Active Development)' },
+            { value: 'completed', label: 'Completed (Archived)' },
           ]}
         />
       )}
 
       <div>
-        <label className="text-sm font-medium text-text-primary mb-2 block">Required Skills</label>
+        <label className="text-xs font-semibold text-slate-700 tracking-tight mb-2 block">
+          Required Technical Skills
+        </label>
         <SkillSelector selectedSkills={skills} onChange={setSkills} />
       </div>
 
-      <div className="pt-2 flex justify-end">
-        <Button type="submit" loading={loading} className="w-full sm:w-auto justify-center cursor-pointer">
+      <div className="pt-4 border-t border-slate-100 flex justify-end">
+        <Button
+          type="submit"
+          loading={loading}
+          size="lg"
+          className="w-full sm:w-auto px-7 font-bold shadow-xs"
+        >
           {submitLabel}
         </Button>
       </div>

@@ -1,11 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useState } from 'react';
 
 export default function Navbar() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleSignOut = async () => {
     await signOut();
@@ -13,7 +11,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white/80 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-40">
+    <nav className="bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
@@ -32,34 +30,34 @@ export default function Navbar() {
           </Link>
 
           {/* Right side navigation buttons */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
             {user ? (
               <div className="flex items-center gap-2">
                 <Link
                   to="/dashboard"
-                  className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#0f261f] text-white hover:bg-[#18362c] transition-all shadow-xs"
+                  className="h-10 px-4 rounded-xl text-xs sm:text-sm font-semibold bg-[#0f261f] text-white hover:bg-[#18362c] transition-all shadow-xs inline-flex items-center justify-center"
                 >
                   Dashboard
                 </Link>
                 <button
                   type="button"
                   onClick={handleSignOut}
-                  className="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                  className="h-10 px-3.5 rounded-xl text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors inline-flex items-center justify-center cursor-pointer"
                 >
                   Logout
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 sm:gap-2.5">
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                  className="h-10 px-4 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition-colors inline-flex items-center justify-center"
                 >
                   Log In
                 </Link>
                 <Link
                   to="/signup"
-                  className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#0f261f] text-white hover:bg-[#18362c] transition-all shadow-xs"
+                  className="h-10 px-4.5 rounded-xl text-xs sm:text-sm font-semibold bg-[#0f261f] text-white hover:bg-[#18362c] transition-all shadow-xs inline-flex items-center justify-center"
                 >
                   Get Started
                 </Link>

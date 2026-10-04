@@ -110,14 +110,15 @@ export default function ProjectDetailPage() {
             <>
               <Link
                 to={`/projects/${id}/edit`}
-                className="p-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 transition-colors shadow-xs"
+                className="h-9 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors shadow-2xs inline-flex items-center gap-1.5 text-xs font-semibold"
                 title="Edit Project"
               >
-                <span className="material-symbols-outlined text-lg">edit</span>
+                <span className="material-symbols-outlined text-base">edit</span>
+                <span className="hidden sm:inline">Edit</span>
               </Link>
               <Link
                 to={`/projects/${id}/requests`}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-800 transition-colors shadow-xs"
+                className="h-9 px-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-800 transition-colors shadow-2xs inline-flex items-center gap-1.5"
                 title="Manage Requests"
               >
                 <span className="material-symbols-outlined text-base">mail</span>
@@ -126,16 +127,17 @@ export default function ProjectDetailPage() {
               <button
                 type="button"
                 onClick={handleDelete}
-                className="p-2 rounded-xl border border-red-200 bg-white hover:bg-red-50 text-red-600 transition-colors cursor-pointer shadow-xs"
+                className="h-9 px-3 rounded-xl border border-red-200 bg-white hover:bg-red-50 text-red-600 transition-colors cursor-pointer shadow-2xs inline-flex items-center gap-1 text-xs font-semibold"
                 title="Delete Project"
               >
-                <span className="material-symbols-outlined text-lg">delete</span>
+                <span className="material-symbols-outlined text-base">delete</span>
+                <span className="hidden sm:inline">Delete</span>
               </button>
             </>
           )}
 
           {!isOwner && !isMember && project.status === 'open' && (
-            <Button onClick={() => setJoinModal(true)}>
+            <Button onClick={() => setJoinModal(true)} size="sm" className="h-9">
               <span className="material-symbols-outlined text-base">person_add</span>
               Request to Join
             </Button>
@@ -149,7 +151,7 @@ export default function ProjectDetailPage() {
     >
       <div className="max-w-4xl mx-auto space-y-6 overflow-x-hidden">
         {/* Project Hero Card */}
-        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-2xs">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2.5 flex-wrap mb-2">
@@ -213,7 +215,7 @@ export default function ProjectDetailPage() {
         </div>
 
         {/* Team Members Card */}
-        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-7 shadow-2xs">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-base font-bold text-slate-900 tracking-tight">
@@ -239,7 +241,7 @@ export default function ProjectDetailPage() {
 
         {/* Recommended Collaborators (for project owner) */}
         {isOwner && (
-          <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-7 shadow-[0_2px_12px_rgba(0,0,0,0.02)]">
+          <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-7 shadow-2xs">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-[#0f261f]">auto_awesome</span>
@@ -272,7 +274,7 @@ export default function ProjectDetailPage() {
                 {recommendedCollaborators.slice(0, 4).map((candidate) => (
                   <div
                     key={candidate.id}
-                    className="p-4 rounded-2xl border border-slate-200/80 bg-slate-50/60 hover:bg-slate-50 transition-all flex flex-col justify-between"
+                    className="p-4 rounded-2xl border border-slate-200/80 bg-slate-50/60 hover:bg-slate-50 transition-all flex flex-col justify-between shadow-2xs"
                   >
                     <div>
                       <div className="flex items-start justify-between gap-2 mb-2.5">
@@ -331,7 +333,7 @@ export default function ProjectDetailPage() {
 
                     <Link
                       to={`/profile/${candidate.id}`}
-                      className="mt-3 text-center text-xs font-bold text-[#0f261f] py-1.5 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 transition-colors shadow-xs"
+                      className="mt-3 text-center text-xs font-bold text-[#0f261f] py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 transition-colors shadow-2xs block"
                     >
                       View Profile
                     </Link>

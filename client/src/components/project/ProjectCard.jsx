@@ -18,13 +18,13 @@ export default function ProjectCard({ project, matchScore }) {
   return (
     <Link
       to={`/projects/${project.id}`}
-      className="flex flex-col justify-between h-full bg-white rounded-[26px] border border-slate-200/80 p-5 sm:p-6 shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:border-slate-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.04)] transition-all duration-200 group"
+      className="flex flex-col justify-between h-full bg-white rounded-[26px] border border-slate-200/80 p-5 sm:p-6 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all duration-200 group"
     >
       <div>
         {/* Top Badges */}
         <div className="flex items-center justify-between gap-2 mb-3.5">
-          <Badge color={statusColors[project.status]}>
-            {statusLabels[project.status]}
+          <Badge color={statusColors[project.status] || 'gray'}>
+            {statusLabels[project.status] || project.status}
           </Badge>
           {matchScore !== undefined && matchScore > 0 && (
             <span
