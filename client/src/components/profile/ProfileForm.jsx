@@ -2,6 +2,9 @@ import { useState } from 'react';
 import Input, { Textarea, Select } from '../ui/Input';
 import Button from '../ui/Button';
 import SkillSelector from './SkillSelector';
+import { User, GraduationCap, Sparkles } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '../ui/SocialIcons';
+import { getInitials } from '../../utils/helpers';
 
 export default function ProfileForm({ profile, onSubmit, loading }) {
   const [form, setForm] = useState({
@@ -31,36 +34,45 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
     );
   };
 
+  const displayName = form.full_name || profile?.full_name || 'Student Developer';
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-8">
       {/* 1. Header Profile Banner Preview */}
-      <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200/80">
-        <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-2xs shrink-0">
+      <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50/80 border border-slate-200/80">
+        <div className="w-14 h-14 rounded-2xl bg-slate-900 text-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-xs shrink-0 text-base font-bold">
           {profile?.avatar_url ? (
             <img
               src={profile.avatar_url}
-              alt={form.full_name || 'Profile'}
+              alt={displayName}
               className="w-14 h-14 object-cover"
             />
           ) : (
-            <span className="material-symbols-outlined text-slate-400 text-3xl">person</span>
+            <span>{getInitials(displayName)}</span>
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-base font-bold text-slate-900 truncate">
-            {form.full_name || 'Your Full Name'}
-          </h4>
-          <p className="text-xs text-slate-500 font-medium truncate mt-0.5">
-            {form.college || profile?.college || 'Student Developer Profile'}
+          <div className="flex items-center gap-2">
+            <h4 className="text-base font-bold text-slate-900 truncate">
+              {displayName}
+            </h4>
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-200/80 text-slate-700 capitalize">
+              {form.experience_level}
+            </span>
+          </div>
+          <p className="text-xs text-slate-500 font-normal truncate mt-0.5 flex items-center gap-1">
+            <GraduationCap className="w-3.5 h-3.5 text-slate-400" />
+            <span>{form.college || profile?.college || 'Student Developer Profile'}</span>
           </p>
         </div>
       </div>
 
-      {/* 2. Personal Information Group */}
+      {/* 2. Personal & Academic Information Group */}
       <div className="space-y-4">
-        <div className="pb-1 border-b border-slate-100">
-          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-            Personal & Academic Information
+        <div className="pb-1 border-b border-slate-100 flex items-center gap-2">
+          <User className="w-4 h-4 text-slate-500" />
+          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            Personal & Academic Background
           </h3>
         </div>
 
@@ -75,7 +87,7 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
         />
 
         <Textarea
-          label="Professional Bio"
+          label="Developer Bio & Interests"
           id="bio"
           name="bio"
           value={form.bio}
@@ -94,12 +106,12 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
             placeholder="e.g. Stanford University"
           />
           <Input
-            label="Degree / Major Course"
+            label="Degree / Major Program"
             id="course"
             name="course"
             value={form.course}
             onChange={handleChange}
-            placeholder="e.g. B.S. Computer Science"
+            placeholder="e.g. B.Tech Computer Science"
           />
         </div>
 
@@ -112,25 +124,30 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
           options={[
             { value: 'beginner', label: 'Beginner (1st/2nd Year)' },
             { value: 'intermediate', label: 'Intermediate (3rd/Final Year)' },
-            { value: 'advanced', label: 'Advanced (Experienced Builder)' },
+            { value: 'advanced', label: 'Advanced (Experienced Builder / Open Source Contributor)' },
           ]}
         />
       </div>
 
       {/* 3. Technical Skills Group */}
       <div className="space-y-3">
-        <div className="pb-1 border-b border-slate-100">
-          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-            Technical Stack & Skills
+        <div className="pb-1 border-b border-slate-100 flex items-center gap-2">
+          <Sparkles className="w-4 h-4 text-emerald-600" />
+          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+            Technical Stack & Verified Skills
           </h3>
         </div>
+        <p className="text-xs text-slate-400">
+          Select all technologies you are comfortable using. This directly feeds into project match recommendations.
+        </p>
         <SkillSelector selectedSkills={skills} onChange={setSkills} />
       </div>
 
-      {/* 4. Portfolio & Profiles Group */}
+      {/* 4. Portfolio & Online Profiles Group */}
       <div className="space-y-4">
-        <div className="pb-1 border-b border-slate-100">
-          <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+        <div className="pb-1 border-b border-slate-100 flex items-center gap-2">
+          <GithubIcon className="w-4 h-4 text-slate-700" />
+          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
             Online Presence & Links
           </h3>
         </div>
@@ -143,7 +160,7 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
             value={form.github_url}
             onChange={handleChange}
             placeholder="https://github.com/username"
-            icon="code"
+            icon={GithubIcon}
           />
           <Input
             label="LinkedIn Profile URL"
@@ -153,21 +170,21 @@ export default function ProfileForm({ profile, onSubmit, loading }) {
             value={form.linkedin_url}
             onChange={handleChange}
             placeholder="https://linkedin.com/in/username"
-            icon="link"
+            icon={LinkedinIcon}
           />
         </div>
       </div>
 
       {/* 5. Save Button Footer */}
       <div className="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
-        <p className="text-xs text-slate-400 font-medium order-2 sm:order-1 text-center sm:text-left">
-          Skills and details are used directly by the matching algorithm.
+        <p className="text-xs text-slate-400 font-normal order-2 sm:order-1 text-center sm:text-left">
+          Skills and experience data are utilized directly by the matching algorithm.
         </p>
         <Button
           type="submit"
           loading={loading}
           size="lg"
-          className="w-full sm:w-auto px-8 font-bold order-1 sm:order-2 shadow-xs"
+          className="w-full sm:w-auto px-8 font-semibold order-1 sm:order-2 shadow-xs"
         >
           Save Profile
         </Button>

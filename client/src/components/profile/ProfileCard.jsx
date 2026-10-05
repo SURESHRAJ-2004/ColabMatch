@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import Badge from '../ui/Badge';
 import SkillBadge from '../ui/SkillBadge';
+import { Zap, Eye, GraduationCap } from 'lucide-react';
+import { getInitials } from '../../utils/helpers';
 
 const experienceColors = {
   beginner: 'green',
@@ -9,56 +11,59 @@ const experienceColors = {
 };
 
 export default function ProfileCard({ profile, matchScore }) {
+  const displayName = profile.full_name || 'Student Developer';
+
   return (
-    <div className="bg-white rounded-[26px] border border-slate-200/80 p-5 sm:p-6 shadow-2xs hover:border-slate-300 hover:shadow-xs transition-all duration-200 flex flex-col justify-between">
+    <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
       <div>
         <div className="flex items-start gap-3.5 mb-4">
           {/* Avatar */}
-          <div className="w-12 h-12 rounded-2xl bg-slate-100 flex items-center justify-center shrink-0 border border-slate-200 overflow-hidden shadow-2xs">
+          <div className="w-11 h-11 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 border border-slate-200 overflow-hidden shadow-2xs text-xs font-bold">
             {profile.avatar_url ? (
               <img
                 src={profile.avatar_url}
-                alt={profile.full_name}
-                className="w-12 h-12 rounded-2xl object-cover"
+                alt={displayName}
+                className="w-11 h-11 object-cover"
               />
             ) : (
-              <span className="material-symbols-outlined text-slate-500 text-2xl">person</span>
+              <span>{getInitials(displayName)}</span>
             )}
           </div>
 
           <div className="flex-1 min-w-0">
-            <div className="flex items-center justify-between gap-2 flex-wrap">
+            <div className="flex items-center justify-between gap-2">
               <Link
                 to={`/profile/${profile.id}`}
-                className="text-sm font-bold text-slate-900 hover:text-[#0f261f] transition-colors truncate"
+                className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors truncate min-w-0 flex-1"
               >
-                {profile.full_name}
+                {displayName}
               </Link>
               {matchScore !== undefined && (
                 <span
-                  className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold border ${
+                  className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold tabular-nums border shrink-0 ${
                     matchScore >= 75
-                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200/70'
+                      ? 'bg-emerald-50/80 text-emerald-700 border-emerald-200/70'
                       : matchScore >= 50
-                      ? 'bg-blue-50 text-blue-700 border-blue-200/70'
+                      ? 'bg-blue-50/80 text-blue-700 border-blue-200/70'
                       : 'bg-slate-100 text-slate-700 border-slate-200'
                   }`}
                 >
-                  <span className="material-symbols-outlined text-[13px]">bolt</span>
-                  {matchScore}% match
+                  <Zap className="w-3 h-3 fill-current" />
+                  <span>{matchScore}% match</span>
                 </span>
               )}
             </div>
 
             <div className="flex items-center gap-2 mt-1 flex-wrap">
               {profile.experience_level && (
-                <Badge color={experienceColors[profile.experience_level] || 'gray'} size="xs">
-                  {profile.experience_level}
+                <Badge color={experienceColors[profile.experience_level] || 'gray'} size="xs" dot>
+                  <span className="capitalize">{profile.experience_level}</span>
                 </Badge>
               )}
               {profile.college && (
-                <span className="text-xs text-slate-500 truncate max-w-[180px]">
-                  {profile.college}
+                <span className="text-xs text-slate-400 max-w-[170px] inline-flex items-center gap-1 min-w-0">
+                  <GraduationCap className="w-3 h-3 text-slate-400 shrink-0" />
+                  <span className="truncate">{profile.college}</span>
                 </span>
               )}
             </div>
@@ -67,7 +72,7 @@ export default function ProfileCard({ profile, matchScore }) {
 
         {/* Bio */}
         {profile.bio && (
-          <p className="text-xs text-slate-500 line-clamp-2 mb-4 leading-relaxed font-normal">
+          <p className="text-xs sm:text-[13px] text-slate-500 line-clamp-2 mb-4 leading-relaxed font-normal">
             {profile.bio}
           </p>
         )}
@@ -79,7 +84,7 @@ export default function ProfileCard({ profile, matchScore }) {
               <SkillBadge key={skill.id} name={skill.name} size="xs" />
             ))}
             {profile.skills.length > 5 && (
-              <span className="text-[11px] font-semibold text-slate-400 self-center px-1.5 py-0.5 bg-slate-50 rounded-full border border-slate-200/60">
+              <span className="text-[10px] font-semibold text-slate-400 self-center px-1.5 py-0.5 bg-slate-100 rounded-md border border-slate-200/60">
                 +{profile.skills.length - 5}
               </span>
             )}
@@ -90,10 +95,10 @@ export default function ProfileCard({ profile, matchScore }) {
       <div className="pt-3.5 border-t border-slate-100 mt-auto">
         <Link
           to={`/profile/${profile.id}`}
-          className="w-full h-10 inline-flex items-center justify-center gap-1.5 px-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900 text-xs font-bold transition-all shadow-2xs"
+          className="w-full h-9 inline-flex items-center justify-center gap-1.5 px-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-900 text-xs font-semibold transition-all shadow-xs"
         >
-          <span className="material-symbols-outlined text-sm">visibility</span>
-          View Profile
+          <Eye className="w-3.5 h-3.5" />
+          <span>View Profile</span>
         </Link>
       </div>
     </div>

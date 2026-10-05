@@ -4,7 +4,10 @@ import api from '../services/api';
 import PageLayout from '../components/layout/PageLayout';
 import Badge from '../components/ui/Badge';
 import SkillBadge from '../components/ui/SkillBadge';
-import Spinner from '../components/ui/Spinner';
+import Skeleton from '../components/ui/Skeleton';
+import { ArrowLeft, GraduationCap, BookOpen, Code2 } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '../components/ui/SocialIcons';
+import { getInitials } from '../utils/helpers';
 
 const experienceColors = {
   beginner: 'green',
@@ -27,7 +30,10 @@ export default function PublicProfilePage() {
   if (loading) {
     return (
       <PageLayout title="Developer Profile" description="Loading profile...">
-        <Spinner className="py-24" />
+        <div className="max-w-3xl mx-auto space-y-4">
+          <Skeleton className="w-full h-40 rounded-2xl" />
+          <Skeleton className="w-full h-64 rounded-2xl" />
+        </div>
       </PageLayout>
     );
   }
@@ -35,60 +41,73 @@ export default function PublicProfilePage() {
   if (!profile) {
     return (
       <PageLayout title="Profile Not Found" description="The requested developer profile does not exist">
-        <p className="text-center text-slate-500 py-24">Profile not found.</p>
+        <div className="text-center py-20 bg-white rounded-2xl border border-slate-200 p-8 max-w-xl mx-auto">
+          <p className="text-slate-500 text-sm mb-4">This profile does not exist or has been removed.</p>
+          <Link
+            to="/matches"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Back to Matches
+          </Link>
+        </div>
       </PageLayout>
     );
   }
 
+  const displayName = profile.full_name || 'Student Developer';
+
   return (
     <PageLayout
-      title={profile.full_name}
+      title={displayName}
       description={profile.college || 'Student Developer Portfolio'}
       actions={
         <Link
           to="/matches"
-          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-50 transition-all shadow-2xs"
+          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-all shadow-xs"
         >
-          <span className="material-symbols-outlined text-base">arrow_back</span>
-          Back to Matches
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back to Matches</span>
         </Link>
       }
     >
       <div className="max-w-3xl mx-auto space-y-6 overflow-x-hidden">
         {/* Main Profile Card */}
-        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-2xs">
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-5 pb-6 border-b border-slate-100">
-            <div className="w-[72px] h-[72px] rounded-[22px] bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden shadow-2xs">
+            <div className="w-18 h-18 rounded-2xl bg-slate-900 text-white border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden shadow-xs text-xl font-bold">
               {profile.avatar_url ? (
                 <img
                   src={profile.avatar_url}
-                  alt={profile.full_name}
-                  className="w-[72px] h-[72px] object-cover"
+                  alt={displayName}
+                  className="w-18 h-18 object-cover"
                 />
               ) : (
-                <span className="material-symbols-outlined text-slate-400 text-4xl">person</span>
+                <span>{getInitials(displayName)}</span>
               )}
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2.5 flex-wrap mb-1.5">
-                <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight break-words">
-                  {profile.full_name}
+                <h1 className="text-2xl font-bold text-slate-900 tracking-tight break-words">
+                  {displayName}
                 </h1>
                 {profile.experience_level && (
-                  <Badge color={experienceColors[profile.experience_level] || 'gray'} size="xs">
-                    {profile.experience_level} level
+                  <Badge color={experienceColors[profile.experience_level] || 'gray'} size="xs" dot>
+                    <span className="capitalize">{profile.experience_level}</span>
                   </Badge>
                 )}
               </div>
               {profile.college && (
-                <p className="text-xs sm:text-sm font-semibold text-slate-700">
-                  {profile.college}
+                <p className="text-xs sm:text-sm font-medium text-slate-700 flex items-center gap-1.5">
+                  <GraduationCap className="w-4 h-4 text-slate-400" />
+                  <span>{profile.college}</span>
                 </p>
               )}
               {profile.course && (
-                <p className="text-xs text-slate-400 font-medium mt-0.5">
-                  {profile.course}
+                <p className="text-xs text-slate-400 font-normal mt-0.5 flex items-center gap-1.5">
+                  <BookOpen className="w-3.5 h-3.5 text-slate-400" />
+                  <span>{profile.course}</span>
                 </p>
               )}
             </div>
@@ -100,7 +119,7 @@ export default function PublicProfilePage() {
               <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
                 About the Developer
               </h2>
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal whitespace-pre-line">
+              <p className="text-sm sm:text-[15px] text-slate-600 leading-relaxed font-normal whitespace-pre-line">
                 {profile.bio}
               </p>
             </div>
@@ -109,8 +128,9 @@ export default function PublicProfilePage() {
           {/* Skills */}
           {profile.skills && profile.skills.length > 0 && (
             <div className="py-6 border-b border-slate-100">
-              <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                Technical Skills & Tools
+              <h2 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                <Code2 className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Technical Stack & Skills</span>
               </h2>
               <div className="flex flex-wrap gap-2">
                 {profile.skills.map((skill) => (
@@ -127,10 +147,10 @@ export default function PublicProfilePage() {
                 href={profile.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors shadow-2xs"
+                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 hover:bg-slate-100 hover:border-slate-300 transition-colors shadow-xs"
               >
-                <span className="material-symbols-outlined text-base">code</span>
-                GitHub Profile
+                <GithubIcon className="w-4 h-4 text-slate-700" />
+                <span>GitHub Profile</span>
               </a>
             )}
             {profile.linkedin_url && (
@@ -138,11 +158,14 @@ export default function PublicProfilePage() {
                 href={profile.linkedin_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-slate-50 border border-slate-200 text-xs font-bold text-slate-800 hover:bg-slate-100 transition-colors shadow-2xs"
+                className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 hover:bg-slate-100 hover:border-slate-300 transition-colors shadow-xs"
               >
-                <span className="material-symbols-outlined text-base">work</span>
-                LinkedIn Profile
+                <LinkedinIcon className="w-4 h-4 text-blue-600" />
+                <span>LinkedIn Profile</span>
               </a>
+            )}
+            {!profile.github_url && !profile.linkedin_url && (
+              <p className="text-xs text-slate-400">No external links provided.</p>
             )}
           </div>
         </div>

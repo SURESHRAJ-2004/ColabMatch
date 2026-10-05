@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -7,13 +7,27 @@ import MemberList from '../components/project/MemberList';
 import Badge from '../components/ui/Badge';
 import SkillBadge from '../components/ui/SkillBadge';
 import Button from '../components/ui/Button';
-import Spinner from '../components/ui/Spinner';
+import Skeleton from '../components/ui/Skeleton';
 import Modal from '../components/ui/Modal';
 import { Textarea } from '../components/ui/Input';
 import toast from 'react-hot-toast';
+import {
+  Edit3,
+  Mail,
+  Trash2,
+  UserPlus,
+  Users,
+  Tag,
+  Sparkles,
+  Zap,
+  ArrowLeft,
+  ArrowRight,
+  Send,
+} from 'lucide-react';
+import { getInitials } from '../utils/helpers';
 
 const statusColors = { open: 'green', in_progress: 'blue', completed: 'gray' };
-const statusLabels = { open: 'Open', in_progress: 'In Progress', completed: 'Completed' };
+const statusLabels = { open: 'Recruiting', in_progress: 'In Progress', completed: 'Completed' };
 
 export default function ProjectDetailPage() {
   const { id } = useParams();
@@ -27,7 +41,7 @@ export default function ProjectDetailPage() {
   const [recommendedCollaborators, setRecommendedCollaborators] = useState([]);
   const [loadingMatches, setLoadingMatches] = useState(false);
 
-  const fetchProject = () => {
+  const fetchProject = useCallback(() => {
     api.get(`/projects/${id}`)
       .then((res) => {
         setProject(res.data);
@@ -41,9 +55,11 @@ export default function ProjectDetailPage() {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
-  };
+  }, [id, user?.id]);
 
-  useEffect(() => { fetchProject(); }, [id, user?.id]);
+  useEffect(() => {
+    fetchProject();
+  }, [fetchProject]);
 
   const isOwner = project?.owner_id === user?.id;
   const isMember = project?.members?.some((m) => (m.profile_id || m.profiles?.id) === user?.id);
@@ -87,7 +103,10 @@ export default function ProjectDetailPage() {
   if (loading) {
     return (
       <PageLayout title="Project Details" description="Loading project...">
-        <Spinner className="py-24" />
+        <div className="max-w-4xl mx-auto space-y-6">
+          <Skeleton className="w-full h-56 rounded-2xl" />
+          <Skeleton className="w-full h-48 rounded-2xl" />
+        </div>
       </PageLayout>
     );
   }
@@ -95,10 +114,23 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <PageLayout title="Project Not Found" description="The requested project was not found">
-        <p className="text-center text-slate-500 py-24">Project not found or was removed.</p>
+        <div className="text-center py-20 bg-white rounded-2xl border border-slate-200 p-8 max-w-xl mx-auto">
+          <p className="text-slate-500 text-sm mb-4">Project not found or was removed.</p>
+          <Link
+            to="/projects"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Back to Projects
+          </Link>
+        </div>
       </PageLayout>
     );
   }
+
+  const currentMembersCount = project.members?.length || 1;
+  const targetSeats = project.team_size || 4;
+  const occupancyPercentage = Math.min(100, Math.round((currentMembersCount / targetSeats) * 100));
 
   return (
     <PageLayout
@@ -110,27 +142,27 @@ export default function ProjectDetailPage() {
             <>
               <Link
                 to={`/projects/${id}/edit`}
-                className="h-9 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors shadow-2xs inline-flex items-center gap-1.5 text-xs font-semibold"
+                className="h-9 px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors shadow-xs inline-flex items-center gap-1.5 text-xs font-semibold"
                 title="Edit Project"
               >
-                <span className="material-symbols-outlined text-base">edit</span>
+                <Edit3 className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Edit</span>
               </Link>
               <Link
                 to={`/projects/${id}/requests`}
-                className="h-9 px-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-bold text-slate-800 transition-colors shadow-2xs inline-flex items-center gap-1.5"
+                className="h-9 px-2.5 sm:px-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-800 transition-colors shadow-xs inline-flex items-center gap-1.5"
                 title="Manage Requests"
               >
-                <span className="material-symbols-outlined text-base">mail</span>
-                Requests
+                <Mail className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Requests</span>
               </Link>
               <button
                 type="button"
                 onClick={handleDelete}
-                className="h-9 px-3 rounded-xl border border-red-200 bg-white hover:bg-red-50 text-red-600 transition-colors cursor-pointer shadow-2xs inline-flex items-center gap-1 text-xs font-semibold"
+                className="h-9 px-2.5 sm:px-3 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 transition-colors cursor-pointer shadow-xs inline-flex items-center gap-1 text-xs font-semibold"
                 title="Delete Project"
               >
-                <span className="material-symbols-outlined text-base">delete</span>
+                <Trash2 className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Delete</span>
               </button>
             </>
@@ -138,47 +170,47 @@ export default function ProjectDetailPage() {
 
           {!isOwner && !isMember && project.status === 'open' && (
             <Button onClick={() => setJoinModal(true)} size="sm" className="h-9">
-              <span className="material-symbols-outlined text-base">person_add</span>
-              Request to Join
+              <UserPlus className="w-3.5 h-3.5" />
+              <span><span className="hidden sm:inline">Request to </span>Join</span>
             </Button>
           )}
 
           {isMember && !isOwner && (
-            <Badge color="green" size="md">Team Member</Badge>
+            <Badge color="green" size="md" dot>Team Member</Badge>
           )}
         </div>
       }
     >
       <div className="max-w-4xl mx-auto space-y-6 overflow-x-hidden">
         {/* Project Hero Card */}
-        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-2xs">
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2.5 flex-wrap mb-2">
-                <Badge color={statusColors[project.status] || 'gray'}>
+              <div className="flex items-center gap-2.5 flex-wrap mb-2.5">
+                <Badge color={statusColors[project.status] || 'gray'} dot>
                   {statusLabels[project.status] || project.status}
                 </Badge>
                 {project.category && (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">
-                    <span className="material-symbols-outlined text-xs">category</span>
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
+                    <Tag className="w-3 h-3 text-slate-400" />
                     {project.category}
                   </span>
                 )}
-                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">
-                  <span className="material-symbols-outlined text-xs">group</span>
-                  {project.team_size || 4} Total Seats
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 tabular-nums">
+                  <Users className="w-3 h-3 text-slate-400" />
+                  {currentMembersCount} / {targetSeats} Members
                 </span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug break-words">
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight leading-snug break-words">
                 {project.title}
               </h1>
 
-              <p className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
-                Project Lead:{' '}
+              <p className="text-xs sm:text-sm text-slate-400 font-normal mt-1.5">
+                Initiative Lead:{' '}
                 <Link
                   to={`/profile/${project.owner?.id}`}
-                  className="text-slate-800 font-bold hover:underline"
+                  className="text-slate-900 font-semibold hover:underline"
                 >
                   {project.owner?.full_name}
                 </Link>
@@ -187,11 +219,25 @@ export default function ProjectDetailPage() {
             </div>
           </div>
 
+          {/* Team Capacity Progress Bar */}
+          <div className="mb-6 p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs font-semibold text-slate-700 mb-2">
+              <span>Team Roster Capacity</span>
+              <span className="tabular-nums text-slate-500 font-normal text-[11px] sm:text-xs">{currentMembersCount} of {targetSeats} seats occupied ({occupancyPercentage}%)</span>
+            </div>
+            <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-slate-900 rounded-full transition-all duration-300"
+                style={{ width: `${occupancyPercentage}%` }}
+              />
+            </div>
+          </div>
+
           {/* Description */}
           {project.description && (
             <div className="mb-6">
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
-                About this Project
+                Project Overview & Objectives
               </h3>
               <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal whitespace-pre-line">
                 {project.description}
@@ -203,7 +249,7 @@ export default function ProjectDetailPage() {
           {project.skills && project.skills.length > 0 && (
             <div className="pt-5 border-t border-slate-100">
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">
-                Required Technical Skills
+                Required Technical Stack & Skills
               </h3>
               <div className="flex flex-wrap gap-2">
                 {project.skills.map((skill) => (
@@ -215,14 +261,15 @@ export default function ProjectDetailPage() {
         </div>
 
         {/* Team Members Card */}
-        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-7 shadow-2xs">
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-base font-bold text-slate-900 tracking-tight">
-                Team Members ({project.members?.length || 0} / {project.team_size || 4})
+              <h2 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                <Users className="w-4 h-4 text-slate-500" />
+                <span>Team Members ({project.members?.length || 0} / {targetSeats})</span>
               </h2>
-              <p className="text-xs text-slate-400 font-medium mt-0.5">
-                Current collaborators on this initiative
+              <p className="text-xs text-slate-400 font-normal mt-0.5">
+                Collaborators actively participating in this capstone
               </p>
             </div>
           </div>
@@ -241,104 +288,112 @@ export default function ProjectDetailPage() {
 
         {/* Recommended Collaborators (for project owner) */}
         {isOwner && (
-          <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-7 shadow-2xs">
-            <div className="flex items-center justify-between mb-4">
+          <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#0f261f]">auto_awesome</span>
+                <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
+                  <Sparkles className="w-4 h-4" />
+                </div>
                 <div>
                   <h2 className="text-base font-bold text-slate-900 tracking-tight">
                     Recommended Collaborators
                   </h2>
-                  <p className="text-xs text-slate-400 font-medium">
-                    Candidates who possess the skills required for this project
+                  <p className="text-xs text-slate-400 font-normal">
+                    Student candidates who possess skills required for this initiative
                   </p>
                 </div>
               </div>
               <Link
                 to="/matches"
-                className="text-xs font-bold text-[#0f261f] hover:underline flex items-center gap-1"
+                className="text-xs font-semibold text-slate-700 hover:text-slate-900 flex items-center gap-1 self-start sm:self-auto shrink-0"
               >
-                More matches
-                <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                <span>All matches</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
 
             {loadingMatches ? (
-              <Spinner className="py-8" size="sm" />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Skeleton className="h-28 rounded-xl" />
+                <Skeleton className="h-28 rounded-xl" />
+              </div>
             ) : recommendedCollaborators.length === 0 ? (
               <p className="text-xs sm:text-sm text-slate-400 py-3">
-                No matching candidate profiles found yet. Add more required skills to your project to improve match results.
+                No matching candidate profiles found yet. Add more required technical skills to your project to improve recommendations.
               </p>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {recommendedCollaborators.slice(0, 4).map((candidate) => (
-                  <div
-                    key={candidate.id}
-                    className="p-4 rounded-2xl border border-slate-200/80 bg-slate-50/60 hover:bg-slate-50 transition-all flex flex-col justify-between shadow-2xs"
-                  >
-                    <div>
-                      <div className="flex items-start justify-between gap-2 mb-2.5">
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden">
-                            {candidate.avatar_url ? (
-                              <img
-                                src={candidate.avatar_url}
-                                alt={candidate.full_name}
-                                className="w-8 h-8 rounded-full object-cover"
-                              />
-                            ) : (
-                              <span className="material-symbols-outlined text-slate-500 text-sm">
-                                person
-                              </span>
-                            )}
+                {recommendedCollaborators.slice(0, 4).map((candidate) => {
+                  const candidateName = candidate.full_name || 'Candidate';
+                  return (
+                    <div
+                      key={candidate.id}
+                      className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-all flex flex-col justify-between shadow-2xs"
+                    >
+                      <div>
+                        <div className="flex items-start justify-between gap-2 mb-2.5">
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <div className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 overflow-hidden text-xs font-bold">
+                              {candidate.avatar_url ? (
+                                <img
+                                  src={candidate.avatar_url}
+                                  alt={candidateName}
+                                  className="w-8 h-8 object-cover"
+                                />
+                              ) : (
+                                <span>{getInitials(candidateName)}</span>
+                              )}
+                            </div>
+                            <div className="truncate min-w-0 flex-1">
+                              <h4 className="text-xs font-bold text-slate-900 truncate">
+                                {candidateName}
+                              </h4>
+                              {candidate.college && (
+                                <p className="text-[11px] text-slate-400 truncate">
+                                  {candidate.college}
+                                </p>
+                              )}
+                            </div>
                           </div>
-                          <div className="truncate">
-                            <h4 className="text-xs font-bold text-slate-900 truncate">
-                              {candidate.full_name}
-                            </h4>
-                            {candidate.college && (
-                              <p className="text-[11px] text-slate-400 truncate">
-                                {candidate.college}
-                              </p>
-                            )}
-                          </div>
+                          <Badge
+                            color={
+                              candidate.match_score >= 75
+                                ? 'green'
+                                : candidate.match_score >= 50
+                                ? 'blue'
+                                : 'gray'
+                            }
+                            size="xs"
+                            className="shrink-0"
+                          >
+                            <Zap className="w-3 h-3 fill-current" />
+                            <span>{candidate.match_score}%</span>
+                          </Badge>
                         </div>
-                        <Badge
-                          color={
-                            candidate.match_score >= 75
-                              ? 'green'
-                              : candidate.match_score >= 50
-                              ? 'blue'
-                              : 'gray'
-                          }
-                          size="xs"
-                        >
-                          {candidate.match_score}%
-                        </Badge>
+
+                        {candidate.matching_skills && candidate.matching_skills.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mb-2">
+                            {candidate.matching_skills.slice(0, 3).map((s) => (
+                              <span
+                                key={s.id}
+                                className="text-[10px] font-medium bg-white border border-slate-200 px-2 py-0.5 rounded-md text-slate-600"
+                              >
+                                {s.name}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
 
-                      {candidate.matching_skills && candidate.matching_skills.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-2">
-                          {candidate.matching_skills.slice(0, 3).map((s) => (
-                            <span
-                              key={s.id}
-                              className="text-[10px] font-semibold bg-white border border-slate-200 px-2 py-0.5 rounded-full text-slate-600"
-                            >
-                              {s.name}
-                            </span>
-                          ))}
-                        </div>
-                      )}
+                      <Link
+                        to={`/profile/${candidate.id}`}
+                        className="mt-3 text-center text-xs font-semibold text-slate-800 py-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 transition-colors shadow-2xs block"
+                      >
+                        View Profile
+                      </Link>
                     </div>
-
-                    <Link
-                      to={`/profile/${candidate.id}`}
-                      className="mt-3 text-center text-xs font-bold text-[#0f261f] py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-100 transition-colors shadow-2xs block"
-                    >
-                      View Profile
-                    </Link>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -346,24 +401,25 @@ export default function ProjectDetailPage() {
       </div>
 
       {/* Join Request Modal */}
-      <Modal isOpen={joinModal} onClose={() => setJoinModal(false)} title="Request to Join Team">
+      <Modal isOpen={joinModal} onClose={() => setJoinModal(false)} title="Apply to Join Team">
         <div className="flex flex-col gap-4">
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">
-            Introduce yourself to the project lead and briefly mention your relevant technical background or how you'd like to contribute.
+            Send an introduction message to <strong className="text-slate-800 font-semibold">{project.owner?.full_name}</strong>. Highlight your relevant skills and how you envision contributing.
           </p>
           <Textarea
             id="join-message"
-            placeholder="Hi, I'm passionate about this topic and experienced with the required tech stack..."
+            placeholder="Hi, I'm passionate about this initiative and have hands-on experience with the required tech stack..."
             value={joinMessage}
             onChange={(e) => setJoinMessage(e.target.value)}
             rows={4}
           />
-          <div className="flex justify-end gap-2.5 pt-2">
-            <Button variant="secondary" onClick={() => setJoinModal(false)}>
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-2.5 pt-2 border-t border-slate-100">
+            <Button variant="secondary" onClick={() => setJoinModal(false)} className="w-full sm:w-auto">
               Cancel
             </Button>
-            <Button onClick={handleJoin} loading={joining}>
-              Send Request
+            <Button onClick={handleJoin} loading={joining} className="w-full sm:w-auto">
+              <Send className="w-3.5 h-3.5" />
+              <span>Send Request</span>
             </Button>
           </div>
         </div>

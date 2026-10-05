@@ -6,11 +6,11 @@ export default function PageLayout({ children, title, description, actions }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#f7f8fa] text-slate-900 flex overflow-x-hidden">
+    <div className="min-h-screen bg-slate-50/70 text-slate-900 flex overflow-x-hidden">
       {/* 1. Sidebar (flex child on desktop, overlay drawer on mobile) */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* 2. Main Content Area: naturally occupies remaining space without overlapping */}
+      {/* 2. Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-x-hidden">
         <TopHeader
           onOpenSidebar={() => setSidebarOpen(true)}
@@ -19,7 +19,7 @@ export default function PageLayout({ children, title, description, actions }) {
           actions={actions}
         />
 
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 animate-in fade-in duration-200">
           {children}
         </main>
       </div>

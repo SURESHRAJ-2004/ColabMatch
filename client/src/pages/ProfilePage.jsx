@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import api from '../services/api';
 import PageLayout from '../components/layout/PageLayout';
 import ProfileForm from '../components/profile/ProfileForm';
-import Spinner from '../components/ui/Spinner';
+import Skeleton from '../components/ui/Skeleton';
 import toast from 'react-hot-toast';
+import { UserCheck } from 'lucide-react';
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
@@ -45,7 +46,10 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <PageLayout title="My Profile" description="Loading profile...">
-        <Spinner className="py-24" />
+        <div className="max-w-3xl mx-auto space-y-4">
+          <Skeleton className="w-full h-32 rounded-2xl" />
+          <Skeleton className="w-full h-96 rounded-2xl" />
+        </div>
       </PageLayout>
     );
   }
@@ -56,12 +60,18 @@ export default function ProfilePage() {
       description="Manage your student developer persona, tech skills, and contact links"
     >
       <div className="max-w-3xl mx-auto overflow-x-hidden">
-        <div className="bg-white rounded-[28px] border border-slate-200/80 p-6 sm:p-8 shadow-2xs">
-          <div className="mb-6 pb-5 border-b border-slate-100">
-            <h2 className="text-lg font-bold text-slate-900 tracking-tight">Profile Details</h2>
-            <p className="text-xs text-slate-400 font-medium mt-0.5">
-              Keep your profile accurate to get matched with high-compatibility teams.
-            </p>
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
+          <div className="mb-6 pb-5 border-b border-slate-100 flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 tracking-tight">Profile Details</h2>
+              <p className="text-xs text-slate-400 font-normal mt-0.5">
+                Keep your profile accurate to match with high-compatibility teams.
+              </p>
+            </div>
+            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-xs font-semibold text-emerald-700 border border-emerald-200/70">
+              <UserCheck className="w-3.5 h-3.5" />
+              <span>Verified Student</span>
+            </div>
           </div>
           <ProfileForm
             profile={profile}

@@ -1,14 +1,23 @@
 import ProjectCard from '../project/ProjectCard';
 import EmptyState from '../ui/EmptyState';
+import { Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function RecommendedSection({ projects }) {
   if (!projects || projects.length === 0) {
     return (
       <EmptyState
-        icon="auto_awesome"
+        icon={Sparkles}
         title="No smart recommendations yet"
-        description="Add your tech skills and experience level in your profile to unlock personalized project matches."
-      />
+        description="Add your technical skills and experience level in your profile to unlock personalized project matches."
+      >
+        <Link
+          to="/profile"
+          className="inline-flex items-center gap-1.5 px-3.5 py-2 mt-2 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-all shadow-xs"
+        >
+          Add Profile Skills
+        </Link>
+      </EmptyState>
     );
   }
 
