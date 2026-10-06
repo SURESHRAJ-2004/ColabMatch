@@ -6,12 +6,12 @@ export default function PageLayout({ children, title, description, actions }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex w-full overflow-x-hidden">
-      {/* 1. Sidebar */}
+    <div className="h-screen h-[100dvh] bg-slate-50 text-slate-900 flex w-full overflow-hidden">
+      {/* 1. Sidebar (Fixed Desktop Shell) */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* 2. Main Content Column */}
-      <div className="flex-1 flex flex-col min-w-0 w-full overflow-x-hidden">
+      {/* 2. Main Content Column (Independently scrollable) */}
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-y-auto overflow-x-hidden">
         <TopHeader
           onOpenSidebar={() => setSidebarOpen(true)}
           title={title}

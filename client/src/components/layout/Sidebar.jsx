@@ -197,8 +197,8 @@ export default function Sidebar({ isOpen, onClose }) {
         </div>
       )}
 
-      {/* Desktop Sticky Sidebar (visible on lg+) */}
-      <aside className="hidden lg:flex w-60 shrink-0 flex-col h-screen sticky top-0 bg-white border-r border-slate-200 z-20 overflow-hidden">
+      {/* Desktop Fixed Sidebar (visible on lg+) */}
+      <aside className="hidden lg:flex w-60 shrink-0 flex-col h-full bg-white border-r border-slate-200 z-20 overflow-hidden">
         <SidebarInner />
       </aside>
     </>
