@@ -11,16 +11,16 @@ import {
 } from 'lucide-react';
 import { getInitials } from '../../utils/helpers';
 
-function SidebarContent({ onClose }) {
+function SidebarInner({ onClose }) {
   const { user, signOut } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const navLinks = [
-    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  const navItems = [
+    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { to: '/matches', label: 'Smart Matches', icon: Sparkles, badge: 'AI' },
-    { to: '/projects', label: 'Projects', icon: FolderGit2, startsWith: true },
-    { to: '/profile', label: 'My Profile', icon: User, exact: true },
+    { to: '/projects', label: 'Projects', icon: FolderGit2 },
+    { to: '/profile', label: 'My Profile', icon: User },
   ];
 
   const handleSignOut = async () => {
@@ -28,15 +28,13 @@ function SidebarContent({ onClose }) {
       await signOut();
       navigate('/login');
     } catch (err) {
-      console.error('Sign out error:', err);
+      console.error(err);
     }
   };
 
-  const isCurrentActive = (item) => {
-    if (item.startsWith) {
-      return location.pathname.startsWith(item.to);
-    }
-    return location.pathname === item.to;
+  const isCurrentActive = (to) => {
+    if (to === '/dashboard') return location.pathname === '/dashboard';
+    return location.pathname.startsWith(to);
   };
 
   const displayName =
@@ -47,10 +45,10 @@ function SidebarContent({ onClose }) {
 
   return (
     <div className="flex flex-col justify-between h-full bg-white select-none">
-      {/* Top Section */}
+      {/* Top Header & Navigation */}
       <div className="flex-1 overflow-y-auto flex flex-col">
-        {/* Brand Header */}
-        <div className="h-16 px-5 flex items-center justify-between border-b border-slate-100">
+        {/* Brand header */}
+        <div className="h-16 px-5 flex items-center justify-between border-b border-slate-100 shrink-0">
           <Link
             to="/dashboard"
             onClick={onClose}
@@ -75,30 +73,30 @@ function SidebarContent({ onClose }) {
               type="button"
               onClick={onClose}
               className="lg:hidden w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer"
-              aria-label="Close navigation"
+              aria-label="Close menu"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Navigation Items */}
+        {/* Navigation list */}
         <div className="px-3 py-4 space-y-1">
           <p className="px-3 pb-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-            Workspace
+            Navigation
           </p>
-          {navLinks.map((item) => {
-            const active = isCurrentActive(item);
+          {navItems.map((item) => {
+            const active = isCurrentActive(item.to);
             const Icon = item.icon;
             return (
               <Link
                 key={item.to}
                 to={item.to}
                 onClick={onClose}
-                className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 ${
+                className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs sm:text-sm transition-all duration-150 ${
                   active
                     ? 'bg-slate-900 text-white shadow-xs font-semibold'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 font-medium'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
@@ -114,7 +112,7 @@ function SidebarContent({ onClose }) {
                     className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                       active
                         ? 'bg-emerald-500/20 text-emerald-300'
-                        : 'bg-emerald-50 text-emerald-700 border border-emerald-200/60'
+                        : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                     }`}
                   >
                     {item.badge}
@@ -126,7 +124,7 @@ function SidebarContent({ onClose }) {
         </div>
       </div>
 
-      {/* Middle Action: Quick New Project */}
+      {/* Middle Quick Action */}
       <div className="px-3 py-2 shrink-0">
         <Link
           to="/projects/new"
@@ -140,7 +138,7 @@ function SidebarContent({ onClose }) {
 
       {/* Bottom User Profile Section */}
       <div className="p-3 border-t border-slate-100 bg-slate-50/50 shrink-0">
-        <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200/80 shadow-xs">
+        <div className="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200 shadow-xs">
           <Link
             to="/profile"
             onClick={onClose}
@@ -185,22 +183,23 @@ function SidebarContent({ onClose }) {
 export default function Sidebar({ isOpen, onClose }) {
   return (
     <>
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer (visible on < 1024px when isOpen) */}
       {isOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
             className="fixed inset-0 bg-slate-950/40 backdrop-blur-xs transition-opacity duration-200"
             onClick={onClose}
+            aria-hidden="true"
           />
-          <aside className="fixed inset-y-0 left-0 w-64 max-w-[80vw] bg-white shadow-2xl flex flex-col z-50 border-r border-slate-200">
-            <SidebarContent onClose={onClose} />
+          <aside className="fixed inset-y-0 left-0 w-64 max-w-[85vw] bg-white shadow-xl flex flex-col z-50 border-r border-slate-200">
+            <SidebarInner onClose={onClose} />
           </aside>
         </div>
       )}
 
-      {/* Desktop Sticky Sidebar */}
-      <aside className="hidden lg:flex w-60 shrink-0 flex-col h-screen sticky top-0 bg-white border-r border-slate-200/80 z-20 overflow-hidden">
-        <SidebarContent />
+      {/* Desktop Sticky Sidebar (visible on lg+) */}
+      <aside className="hidden lg:flex w-60 shrink-0 flex-col h-screen sticky top-0 bg-white border-r border-slate-200 z-20 overflow-hidden">
+        <SidebarInner />
       </aside>
     </>
   );

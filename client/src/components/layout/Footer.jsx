@@ -4,8 +4,9 @@ import { Sparkles, Heart } from 'lucide-react';
 const currentYear = new Date().getFullYear();
 
 export default function Footer() {
+
   return (
-    <footer className="bg-white border-t border-slate-200/80 mt-auto py-10 sm:py-12">
+    <footer className="bg-white border-t border-slate-200 mt-auto py-10 sm:py-12 w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8 pb-8 border-b border-slate-100">
           <div className="md:col-span-2">
@@ -18,44 +19,44 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-xs text-slate-500 font-normal max-w-sm leading-relaxed mb-4">
-              An intelligent final-year collaboration hub built for student developers, engineers, and creators to assemble balanced teams and ship real-world initiatives.
+              A high-compatibility student collaboration hub designed for final-year engineering and capstone teams to assemble balanced skill sets and ship together.
             </p>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-100 text-[11px] font-medium text-slate-600">
-              <span>Made with</span>
+              <span>Built with care</span>
               <Heart className="w-3 h-3 text-rose-500 fill-rose-500" />
-              <span>for student engineers</span>
+              <span>for student developers</span>
             </div>
           </div>
 
           <div>
             <p className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">
-              Platform
+              Navigation
             </p>
-            <ul className="space-y-2 text-xs text-slate-500">
+            <ul className="space-y-2 text-xs text-slate-500 font-medium">
               <li><Link to="/projects" className="hover:text-slate-900 transition-colors">Browse Projects</Link></li>
-              <li><Link to="/matches" className="hover:text-slate-900 transition-colors">Smart Matching</Link></li>
-              <li><Link to="/signup" className="hover:text-slate-900 transition-colors">Create Account</Link></li>
+              <li><Link to="/matches" className="hover:text-slate-900 transition-colors">Smart Matches</Link></li>
+              <li><Link to="/signup" className="hover:text-slate-900 transition-colors">Create Free Account</Link></li>
             </ul>
           </div>
 
           <div>
             <p className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">
-              Resources
+              Account
             </p>
-            <ul className="space-y-2 text-xs text-slate-500">
+            <ul className="space-y-2 text-xs text-slate-500 font-medium">
               <li><Link to="/login" className="hover:text-slate-900 transition-colors">Student Login</Link></li>
               <li><a href="#how-it-works" className="hover:text-slate-900 transition-colors">Matching Engine Guide</a></li>
-              <li><a href="#faq" className="hover:text-slate-900 transition-colors">FAQ & Tips</a></li>
+              <li><a href="#features" className="hover:text-slate-900 transition-colors">Platform Features</a></li>
             </ul>
           </div>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 font-medium">
           <p>&copy; {currentYear} COLABMATCH. All rights reserved.</p>
-          <p className="flex items-center gap-4">
-            <span className="hover:text-slate-600 transition-colors">Final-Year Capstone Platform</span>
+          <p className="flex items-center gap-3">
+            <span>Student Capstone Platform</span>
             <span>&bull;</span>
-            <span className="hover:text-slate-600 transition-colors">Portfolio Edition</span>
+            <span>Portfolio Edition</span>
           </p>
         </div>
       </div>

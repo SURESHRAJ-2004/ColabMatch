@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
 import PageLayout from '../components/layout/PageLayout';
@@ -14,26 +14,33 @@ export default function ProjectsPage() {
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({ search: '', category: '', status: '' });
 
-  const fetchProjects = useCallback(async (currentFilters) => {
-    try {
-      const params = new URLSearchParams();
-      if (currentFilters.search) params.append('search', currentFilters.search);
-      if (currentFilters.category) params.append('category', currentFilters.category);
-      if (currentFilters.status) params.append('status', currentFilters.status);
-
-      const { data } = await api.get(`/projects?${params.toString()}`);
-      setProjects(data.projects || []);
-      setTotal(data.total || 0);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    fetchProjects(filters);
-  }, [filters, fetchProjects]);
+    let ignore = false;
+    const load = async () => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        if (filters.search) params.append('search', filters.search);
+        if (filters.category) params.append('category', filters.category);
+        if (filters.status) params.append('status', filters.status);
+
+        const { data } = await api.get(`/projects?${params.toString()}`);
+        if (!ignore) {
+          setProjects(data.projects || []);
+          setTotal(data.total || 0);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        if (!ignore) setLoading(false);
+      }
+    };
+
+    load();
+    return () => {
+      ignore = true;
+    };
+  }, [filters]);
 
   return (
     <PageLayout
@@ -42,14 +49,14 @@ export default function ProjectsPage() {
       actions={
         <Link
           to="/projects/new"
-          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-semibold hover:bg-slate-800 transition-all shadow-xs"
+          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-semibold hover:bg-slate-800 transition-all shadow-xs shrink-0"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>New Project</span>
         </Link>
       }
     >
-      <div className="space-y-6 overflow-x-hidden">
+      <div className="space-y-6 w-full overflow-x-hidden">
         <ProjectFilters
           filters={filters}
           onChange={(newFilters) => {
@@ -87,7 +94,7 @@ export default function ProjectsPage() {
               </Link>
             </EmptyState>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
               {projects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}

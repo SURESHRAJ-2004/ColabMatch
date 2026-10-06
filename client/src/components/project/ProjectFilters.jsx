@@ -38,7 +38,7 @@ export default function ProjectFilters({ filters, onChange }) {
   const hasActiveFilters = Boolean(filters.search || filters.category || filters.status);
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 p-4 sm:p-5 shadow-xs">
+    <div className="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-xs w-full">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
         {/* Search */}
         <form onSubmit={handleSearchSubmit} className="md:col-span-6 flex gap-2">
@@ -46,10 +46,10 @@ export default function ProjectFilters({ filters, onChange }) {
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Search projects by title, stack, or keywords..."
+              placeholder="Search by title, stack, or keywords..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full h-10 pl-10 pr-3.5 rounded-xl border border-slate-200/90 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 bg-white text-slate-900 placeholder:text-slate-400 shadow-xs"
+              className="w-full h-10 pl-10 pr-3.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 bg-white text-slate-900 placeholder:text-slate-400 shadow-xs"
             />
           </div>
           <button

@@ -12,14 +12,14 @@ export default function MyProjects({ projects }) {
       <EmptyState
         icon={FolderGit2}
         title="No projects created yet"
-        description="Launch your capstone project or startup idea to start discovering matching teammates."
+        description="Launch your capstone initiative to begin matching with student collaborators."
       >
         <Link
           to="/projects/new"
           className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-all shadow-xs"
         >
           <Plus className="w-3.5 h-3.5" />
-          Create Project
+          <span>Create Project</span>
         </Link>
       </EmptyState>
     );
@@ -31,17 +31,15 @@ export default function MyProjects({ projects }) {
         <Link
           key={project.id}
           to={`/projects/${project.id}`}
-          className="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border border-slate-200/80 bg-white hover:border-slate-300 hover:shadow-xs transition-all gap-3 group"
+          className="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-white hover:border-slate-300 hover:shadow-xs transition-all gap-3 group"
         >
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2">
-              <p className="text-sm font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors truncate">
-                {project.title}
-              </p>
-            </div>
+            <p className="text-sm font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors truncate">
+              {project.title}
+            </p>
             {project.category && (
               <p className="text-xs text-slate-400 font-normal truncate mt-0.5 flex items-center gap-1">
-                <Tag className="w-3 h-3 text-slate-400" />
+                <Tag className="w-3 h-3 text-slate-400 shrink-0" />
                 <span>{project.category}</span>
               </p>
             )}

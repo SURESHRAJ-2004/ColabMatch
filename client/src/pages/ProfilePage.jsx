@@ -28,7 +28,7 @@ export default function ProfilePage() {
       const skillIds = skills.map((s) => s.id);
       await api.put('/profiles/me/skills', { skill_ids: skillIds });
 
-      // Refetch to get updated skills
+      // Refetch to get updated profile
       const { data: freshProfile } = await api.get('/profiles/me');
       setProfile(freshProfile);
       toast.success('Profile updated successfully!');
@@ -46,7 +46,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <PageLayout title="My Profile" description="Loading profile...">
-        <div className="max-w-3xl mx-auto space-y-4">
+        <div className="max-w-3xl mx-auto space-y-4 w-full">
           <Skeleton className="w-full h-32 rounded-2xl" />
           <Skeleton className="w-full h-96 rounded-2xl" />
         </div>
@@ -59,8 +59,8 @@ export default function ProfilePage() {
       title="My Profile"
       description="Manage your student developer persona, tech skills, and contact links"
     >
-      <div className="max-w-3xl mx-auto overflow-x-hidden">
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
+      <div className="max-w-3xl mx-auto w-full overflow-x-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
           <div className="mb-6 pb-5 border-b border-slate-100 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-bold text-slate-900 tracking-tight">Profile Details</h2>
@@ -68,7 +68,7 @@ export default function ProfilePage() {
                 Keep your profile accurate to match with high-compatibility teams.
               </p>
             </div>
-            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-xs font-semibold text-emerald-700 border border-emerald-200/70">
+            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-xs font-semibold text-emerald-700 border border-emerald-200">
               <UserCheck className="w-3.5 h-3.5" />
               <span>Verified Student</span>
             </div>

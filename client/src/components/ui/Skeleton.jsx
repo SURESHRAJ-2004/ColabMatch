@@ -8,7 +8,7 @@ export default function Skeleton({ className = '', variant = 'rectangular' }) {
 
   return (
     <div
-      className={`animate-pulse bg-slate-200/80 ${variantClasses[variant] || 'rounded-xl'} ${className}`}
+      className={`animate-pulse bg-slate-200/70 ${variantClasses[variant] || 'rounded-xl'} ${className}`}
       aria-hidden="true"
     />
   );
@@ -22,16 +22,16 @@ export function CardSkeleton() {
           <Skeleton className="w-20 h-5" />
           <Skeleton className="w-16 h-5" />
         </div>
-        <Skeleton className="w-3/4 h-6 mb-2" />
-        <Skeleton className="w-1/2 h-4 mb-4" />
-        <Skeleton className="w-full h-12 mb-4" />
+        <Skeleton className="w-3/4 h-5 mb-2.5" />
+        <Skeleton className="w-1/2 h-3.5 mb-4" />
+        <Skeleton className="w-full h-10 mb-4" />
         <div className="flex gap-2">
-          <Skeleton className="w-16 h-6 rounded-full" />
-          <Skeleton className="w-20 h-6 rounded-full" />
-          <Skeleton className="w-14 h-6 rounded-full" />
+          <Skeleton className="w-16 h-5 rounded-lg" />
+          <Skeleton className="w-20 h-5 rounded-lg" />
+          <Skeleton className="w-14 h-5 rounded-lg" />
         </div>
       </div>
-      <div className="pt-4 mt-6 border-t border-slate-100 flex items-center justify-between">
+      <div className="pt-4 mt-5 border-t border-slate-100 flex items-center justify-between">
         <Skeleton className="w-24 h-4" />
         <Skeleton className="w-16 h-4" />
       </div>

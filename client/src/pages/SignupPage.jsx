@@ -36,7 +36,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50/70 bg-grid-pattern px-4 py-12 relative">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-12 relative w-full overflow-x-hidden">
       <div className="w-full max-w-md relative z-10">
         {/* Brand Header */}
         <div className="text-center mb-8">
@@ -60,7 +60,7 @@ export default function SignupPage() {
         </div>
 
         {/* Card Form */}
-        <div className="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 shadow-sm">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <Input
               label="Full Name"

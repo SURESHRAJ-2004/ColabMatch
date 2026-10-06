@@ -3,7 +3,6 @@ import Input, { Textarea, Select } from '../ui/Input';
 import Button from '../ui/Button';
 import SkillSelector from '../profile/SkillSelector';
 
-
 const categories = [
   { value: '', label: 'Select a category' },
   { value: 'Web Development', label: 'Web Development' },
@@ -41,8 +40,8 @@ export default function ProjectForm({ project, onSubmit, loading, submitLabel = 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      {/* 1. General Project Details */}
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
+      {/* 1. Project Details */}
       <div className="space-y-4">
         <Input
           label="Project Title"
@@ -51,16 +50,16 @@ export default function ProjectForm({ project, onSubmit, loading, submitLabel = 
           value={form.title}
           onChange={handleChange}
           required
-          placeholder="e.g. AI-Powered Autonomous Health Monitor"
+          placeholder="e.g. Autonomous Robotic Rover for Field Diagnostics"
         />
 
         <Textarea
-          label="Project Overview & Objectives"
+          label="Project Overview & Goals"
           id="description"
           name="description"
           value={form.description}
           onChange={handleChange}
-          placeholder="Describe what your team is building, technical stack choices, key milestones, and collaborator responsibilities..."
+          placeholder="Describe your project vision, target problems, technical architecture, and team responsibilities..."
           rows={4}
         />
 
@@ -108,14 +107,14 @@ export default function ProjectForm({ project, onSubmit, loading, submitLabel = 
             Required Technical Stack & Skills
           </label>
           <p className="text-xs text-slate-400 mt-0.5">
-            Select the skills your project needs. Our algorithm matches student candidates who know these tools.
+            Select the skills your project requires. Our matching algorithm connects peer candidates with these proficiencies.
           </p>
         </div>
         <SkillSelector selectedSkills={skills} onChange={setSkills} />
       </div>
 
-      {/* 3. Form Submit Footer */}
-      <div className="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
+      {/* 3. Action Footer */}
+      <div className="pt-4 border-t border-slate-100 flex items-center justify-end">
         <Button
           type="submit"
           loading={loading}

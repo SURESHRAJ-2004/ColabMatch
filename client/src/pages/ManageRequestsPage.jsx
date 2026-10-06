@@ -22,7 +22,7 @@ export default function ManageRequestsPage() {
 
   const fetchRequests = useCallback(() => {
     api.get(`/projects/${id}/requests`)
-      .then((res) => setRequests(res.data))
+      .then((res) => setRequests(res.data || []))
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [id]);
@@ -47,7 +47,7 @@ export default function ManageRequestsPage() {
   if (loading) {
     return (
       <PageLayout title="Manage Requests" description="Loading candidate requests...">
-        <div className="max-w-3xl mx-auto space-y-4">
+        <div className="max-w-3xl mx-auto space-y-4 w-full">
           <Skeleton className="w-full h-32 rounded-2xl" />
           <Skeleton className="w-full h-32 rounded-2xl" />
         </div>
@@ -62,14 +62,14 @@ export default function ManageRequestsPage() {
       actions={
         <Link
           to={`/projects/${id}`}
-          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-all shadow-xs"
+          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-all shadow-xs shrink-0"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Project</span>
         </Link>
       }
     >
-      <div className="max-w-3xl mx-auto overflow-x-hidden">
+      <div className="max-w-3xl mx-auto w-full overflow-x-hidden">
         {requests.length === 0 ? (
           <EmptyState
             icon={MailCheck}
@@ -85,7 +85,7 @@ export default function ManageRequestsPage() {
               return (
                 <div
                   key={request.id}
-                  className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs hover:border-slate-300 transition-all"
+                  className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs hover:border-slate-300 transition-all"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                     <div className="flex items-start gap-3.5 min-w-0 flex-1">
@@ -123,10 +123,10 @@ export default function ManageRequestsPage() {
 
                         {/* Intro Message */}
                         {request.message && (
-                          <div className="mt-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                          <div className="mt-3 p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
                             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1">
                               <MessageSquare className="w-3 h-3" />
-                              Applicant note:
+                              <span>Applicant note:</span>
                             </p>
                             {request.message}
                           </div>

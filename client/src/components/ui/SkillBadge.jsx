@@ -18,11 +18,11 @@ export default function SkillBadge({
       <button
         type="button"
         onClick={onClick}
-        className={`inline-flex items-center gap-1.5 font-medium rounded-lg border transition-all duration-150 cursor-pointer select-none ${sizeClasses}
+        className={`inline-flex items-center gap-1.5 font-medium rounded-lg border transition-all duration-150 cursor-pointer select-none active:scale-[0.97] ${sizeClasses}
           ${
             selected
               ? 'bg-slate-900 text-white border-slate-900 shadow-xs font-semibold'
-              : 'bg-white text-slate-700 border-slate-200/90 hover:bg-slate-50 hover:border-slate-300'
+              : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
           }`}
       >
         <span>{name}</span>
@@ -33,14 +33,14 @@ export default function SkillBadge({
 
   return (
     <span
-      className={`inline-flex items-center gap-1 font-medium rounded-lg bg-slate-50/80 text-slate-700 border border-slate-200/80 ${sizeClasses}`}
+      className={`inline-flex items-center gap-1 font-medium rounded-lg bg-slate-50 text-slate-700 border border-slate-200 ${sizeClasses} whitespace-nowrap`}
     >
       <span>{name}</span>
       {removable && onRemove && (
         <button
           type="button"
           onClick={onRemove}
-          className="hover:text-red-600 hover:bg-red-50 p-0.5 rounded ml-0.5 flex items-center justify-center cursor-pointer transition-colors"
+          className="hover:text-rose-600 hover:bg-rose-50 p-0.5 rounded ml-0.5 flex items-center justify-center cursor-pointer transition-colors"
           aria-label={`Remove ${name}`}
         >
           <X className="w-3 h-3" />

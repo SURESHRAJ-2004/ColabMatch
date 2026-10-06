@@ -14,7 +14,7 @@ export default function ProfileCard({ profile, matchScore }) {
   const displayName = profile.full_name || 'Student Developer';
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group">
+    <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs hover:border-slate-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between group w-full">
       <div>
         <div className="flex items-start gap-3.5 mb-4">
           {/* Avatar */}
@@ -38,13 +38,13 @@ export default function ProfileCard({ profile, matchScore }) {
               >
                 {displayName}
               </Link>
-              {matchScore !== undefined && (
+              {matchScore !== undefined && matchScore > 0 && (
                 <span
                   className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold tabular-nums border shrink-0 ${
                     matchScore >= 75
-                      ? 'bg-emerald-50/80 text-emerald-700 border-emerald-200/70'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                       : matchScore >= 50
-                      ? 'bg-blue-50/80 text-blue-700 border-blue-200/70'
+                      ? 'bg-blue-50 text-blue-700 border-blue-200'
                       : 'bg-slate-100 text-slate-700 border-slate-200'
                   }`}
                 >
@@ -61,7 +61,7 @@ export default function ProfileCard({ profile, matchScore }) {
                 </Badge>
               )}
               {profile.college && (
-                <span className="text-xs text-slate-400 max-w-[170px] inline-flex items-center gap-1 min-w-0">
+                <span className="text-xs text-slate-400 max-w-[160px] inline-flex items-center gap-1 min-w-0">
                   <GraduationCap className="w-3 h-3 text-slate-400 shrink-0" />
                   <span className="truncate">{profile.college}</span>
                 </span>
@@ -84,7 +84,7 @@ export default function ProfileCard({ profile, matchScore }) {
               <SkillBadge key={skill.id} name={skill.name} size="xs" />
             ))}
             {profile.skills.length > 5 && (
-              <span className="text-[10px] font-semibold text-slate-400 self-center px-1.5 py-0.5 bg-slate-100 rounded-md border border-slate-200/60">
+              <span className="text-[10px] font-semibold text-slate-400 self-center px-1.5 py-0.5 bg-slate-100 rounded-md border border-slate-200">
                 +{profile.skills.length - 5}
               </span>
             )}

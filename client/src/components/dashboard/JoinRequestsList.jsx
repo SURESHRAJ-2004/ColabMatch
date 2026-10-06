@@ -5,7 +5,7 @@ import { Mail, Send, ArrowRight } from 'lucide-react';
 import { getInitials } from '../../utils/helpers';
 
 const statusColors = { pending: 'orange', accepted: 'green', rejected: 'red' };
-const statusLabels = { pending: 'Pending Review', accepted: 'Accepted', rejected: 'Declined' };
+const statusLabels = { pending: 'Pending', accepted: 'Accepted', rejected: 'Declined' };
 
 export default function JoinRequestsList({ requests, type = 'incoming' }) {
   if (!requests || requests.length === 0) {
@@ -15,8 +15,8 @@ export default function JoinRequestsList({ requests, type = 'incoming' }) {
         title={type === 'incoming' ? 'No pending requests' : 'No active applications'}
         description={
           type === 'incoming'
-            ? 'Incoming requests from students wanting to join your teams will appear here.'
-            : 'Applications you submit to join peer projects will appear here.'
+            ? 'Incoming applications from peers to join your projects will appear here.'
+            : 'Applications you submit to join other student projects will appear here.'
         }
       />
     );
@@ -31,11 +31,11 @@ export default function JoinRequestsList({ requests, type = 'incoming' }) {
         return (
           <div
             key={request.id}
-            className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 sm:p-4 rounded-xl border border-slate-200/80 bg-white gap-3 shadow-xs hover:border-slate-300 transition-all"
+            className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-white gap-3 shadow-xs hover:border-slate-300 transition-all"
           >
             <div className="flex items-center gap-3 min-w-0 flex-1">
               {type === 'incoming' && (
-                <div className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 overflow-hidden text-xs font-bold">
+                <div className="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center shrink-0 overflow-hidden text-xs font-bold shadow-2xs">
                   {avatarUrl ? (
                     <img
                       src={avatarUrl}
@@ -53,8 +53,8 @@ export default function JoinRequestsList({ requests, type = 'incoming' }) {
                     <p className="text-sm font-semibold text-slate-900 truncate">
                       {applicantName}
                     </p>
-                    <p className="text-xs text-slate-400 font-normal truncate">
-                      Requested to join <span className="font-medium text-slate-700">{request.projects?.title}</span>
+                    <p className="text-xs text-slate-500 font-normal truncate">
+                      Applied to join <span className="font-semibold text-slate-800">{request.projects?.title}</span>
                     </p>
                   </>
                 ) : (
@@ -62,8 +62,8 @@ export default function JoinRequestsList({ requests, type = 'incoming' }) {
                     <p className="text-sm font-semibold text-slate-900 truncate">
                       {request.projects?.title}
                     </p>
-                    <p className="text-xs text-slate-400 font-normal truncate">
-                      Led by <span className="font-medium text-slate-700">{request.projects?.profiles?.full_name || 'Project Lead'}</span>
+                    <p className="text-xs text-slate-500 font-normal truncate">
+                      Led by <span className="font-semibold text-slate-800">{request.projects?.profiles?.full_name || 'Project Lead'}</span>
                     </p>
                   </>
                 )}

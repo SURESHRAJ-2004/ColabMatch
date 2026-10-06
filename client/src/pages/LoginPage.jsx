@@ -29,13 +29,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50/70 bg-grid-pattern px-4 py-12 relative">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50/80 px-4 py-12 relative w-full overflow-x-hidden">
       <div className="w-full max-w-md relative z-10">
         {/* Brand Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-7">
           <Link
             to="/"
-            className="inline-flex items-center gap-2.5 mb-5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 rounded-xl"
+            className="inline-flex items-center gap-2.5 mb-4 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 rounded-xl"
           >
             <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center shadow-xs group-hover:bg-slate-800 transition-colors">
               <Sparkles className="w-4.5 h-4.5 text-emerald-400" />
@@ -47,14 +47,14 @@ export default function LoginPage() {
           <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
             Welcome back
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1">
+          <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1.5">
             Sign in to access your projects and collaborator matches
           </p>
         </div>
 
         {/* Card Form */}
         <div className="bg-white rounded-2xl border border-slate-200/90 p-6 sm:p-8 shadow-sm">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4.5">
             <Input
               label="Email Address"
               id="email"

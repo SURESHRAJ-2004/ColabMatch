@@ -21,7 +21,7 @@ export default function ProjectCard({ project, matchScore }) {
   return (
     <Link
       to={`/projects/${project.id}`}
-      className="flex flex-col justify-between h-full bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-200 group"
+      className="flex flex-col justify-between h-full bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs hover:border-slate-300 hover:shadow-sm transition-all duration-200 group w-full"
     >
       <div>
         {/* Top Badges */}
@@ -34,9 +34,9 @@ export default function ProjectCard({ project, matchScore }) {
             <span
               className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold tabular-nums border ${
                 matchScore >= 75
-                  ? 'bg-emerald-50/80 text-emerald-700 border-emerald-200/70'
+                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                   : matchScore >= 50
-                  ? 'bg-blue-50/80 text-blue-700 border-blue-200/70'
+                  ? 'bg-blue-50 text-blue-700 border-blue-200'
                   : 'bg-slate-100 text-slate-700 border-slate-200'
               }`}
             >
@@ -46,7 +46,7 @@ export default function ProjectCard({ project, matchScore }) {
           )}
         </div>
 
-        {/* Title & Author */}
+        {/* Title & Owner */}
         <div className="mb-3">
           <div className="flex items-start justify-between gap-1.5">
             <h3 className="text-base font-bold text-slate-900 group-hover:text-emerald-700 transition-colors leading-snug line-clamp-1 flex-1">
@@ -75,7 +75,7 @@ export default function ProjectCard({ project, matchScore }) {
               <SkillBadge key={skill.id} name={skill.name} size="xs" />
             ))}
             {project.skills.length > 4 && (
-              <span className="text-[10px] font-semibold text-slate-400 self-center px-1.5 py-0.5 bg-slate-100 rounded-md border border-slate-200/60">
+              <span className="text-[10px] font-semibold text-slate-400 self-center px-1.5 py-0.5 bg-slate-100 rounded-md border border-slate-200">
                 +{project.skills.length - 4}
               </span>
             )}
@@ -85,7 +85,7 @@ export default function ProjectCard({ project, matchScore }) {
 
       {/* Meta Footer */}
       <div className="flex items-center justify-between gap-3 text-xs text-slate-400 pt-3.5 border-t border-slate-100 mt-auto">
-        <span className="flex items-center gap-1.5 font-medium truncate max-w-[170px]">
+        <span className="flex items-center gap-1.5 font-medium truncate max-w-[160px]">
           <Tag className="w-3.5 h-3.5 text-slate-400 shrink-0" />
           <span className="truncate">{project.category || 'General'}</span>
         </span>

@@ -103,7 +103,7 @@ export default function ProjectDetailPage() {
   if (loading) {
     return (
       <PageLayout title="Project Details" description="Loading project...">
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-4xl mx-auto space-y-6 w-full">
           <Skeleton className="w-full h-56 rounded-2xl" />
           <Skeleton className="w-full h-48 rounded-2xl" />
         </div>
@@ -114,14 +114,14 @@ export default function ProjectDetailPage() {
   if (!project) {
     return (
       <PageLayout title="Project Not Found" description="The requested project was not found">
-        <div className="text-center py-20 bg-white rounded-2xl border border-slate-200 p-8 max-w-xl mx-auto">
+        <div className="text-center py-20 bg-white rounded-2xl border border-slate-200 p-8 max-w-xl mx-auto w-full">
           <p className="text-slate-500 text-sm mb-4">Project not found or was removed.</p>
           <Link
             to="/projects"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            Back to Projects
+            <span>Back to Projects</span>
           </Link>
         </div>
       </PageLayout>
@@ -137,7 +137,7 @@ export default function ProjectDetailPage() {
       title={project.title}
       description={`Led by ${project.owner?.full_name || 'Project Lead'}`}
       actions={
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           {isOwner && (
             <>
               <Link
@@ -181,9 +181,9 @@ export default function ProjectDetailPage() {
         </div>
       }
     >
-      <div className="max-w-4xl mx-auto space-y-6 overflow-x-hidden">
-        {/* Project Hero Card */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
+      <div className="max-w-4xl mx-auto space-y-6 w-full overflow-x-hidden">
+        {/* Project Header Banner Card */}
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs w-full">
           <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2.5 flex-wrap mb-2.5">
@@ -206,7 +206,7 @@ export default function ProjectDetailPage() {
                 {project.title}
               </h1>
 
-              <p className="text-xs sm:text-sm text-slate-400 font-normal mt-1.5">
+              <p className="text-xs sm:text-sm text-slate-500 font-normal mt-1.5">
                 Initiative Lead:{' '}
                 <Link
                   to={`/profile/${project.owner?.id}`}
@@ -220,10 +220,12 @@ export default function ProjectDetailPage() {
           </div>
 
           {/* Team Capacity Progress Bar */}
-          <div className="mb-6 p-4 rounded-xl bg-slate-50 border border-slate-200/80">
+          <div className="mb-6 p-4 rounded-xl bg-slate-50 border border-slate-200">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-xs font-semibold text-slate-700 mb-2">
               <span>Team Roster Capacity</span>
-              <span className="tabular-nums text-slate-500 font-normal text-[11px] sm:text-xs">{currentMembersCount} of {targetSeats} seats occupied ({occupancyPercentage}%)</span>
+              <span className="tabular-nums text-slate-500 font-normal text-[11px] sm:text-xs">
+                {currentMembersCount} of {targetSeats} seats occupied ({occupancyPercentage}%)
+              </span>
             </div>
             <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
               <div
@@ -261,7 +263,7 @@ export default function ProjectDetailPage() {
         </div>
 
         {/* Team Members Card */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-xs w-full">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
@@ -288,7 +290,7 @@ export default function ProjectDetailPage() {
 
         {/* Recommended Collaborators (for project owner) */}
         {isOwner && (
-          <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs">
+          <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-xs w-full">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0">
@@ -328,7 +330,7 @@ export default function ProjectDetailPage() {
                   return (
                     <div
                       key={candidate.id}
-                      className="p-4 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 transition-all flex flex-col justify-between shadow-2xs"
+                      className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-slate-50 transition-all flex flex-col justify-between shadow-2xs"
                     >
                       <div>
                         <div className="flex items-start justify-between gap-2 mb-2.5">
@@ -400,7 +402,7 @@ export default function ProjectDetailPage() {
         )}
       </div>
 
-      {/* Join Request Modal */}
+      {/* Join Request Modal Dialog */}
       <Modal isOpen={joinModal} onClose={() => setJoinModal(false)} title="Apply to Join Team">
         <div className="flex flex-col gap-4">
           <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">

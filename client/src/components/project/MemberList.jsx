@@ -5,7 +5,7 @@ import { getInitials } from '../../utils/helpers';
 
 export default function MemberList({ members, ownerId, currentUserId, onRemove }) {
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-2.5 w-full">
       {members.map((member) => {
         const profile = member.profiles || member;
         const isOwner = member.role === 'owner';
@@ -14,10 +14,10 @@ export default function MemberList({ members, ownerId, currentUserId, onRemove }
         return (
           <div
             key={member.profile_id || profile.id}
-            className="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border border-slate-200/80 bg-white gap-3 shadow-xs hover:border-slate-300 transition-all"
+            className="flex items-center justify-between p-3.5 sm:p-4 rounded-xl border border-slate-200 bg-white gap-3 shadow-xs hover:border-slate-300 transition-all"
           >
             <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="w-9 h-9 rounded-lg bg-slate-900 text-white border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden text-xs font-bold shadow-2xs">
+              <div className="w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0 overflow-hidden text-xs font-bold shadow-2xs">
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
@@ -42,7 +42,7 @@ export default function MemberList({ members, ownerId, currentUserId, onRemove }
                 </div>
                 {profile.college && (
                   <p className="text-xs text-slate-400 font-normal truncate mt-0.5 flex items-center gap-1">
-                    <GraduationCap className="w-3 h-3 text-slate-400" />
+                    <GraduationCap className="w-3 h-3 text-slate-400 shrink-0" />
                     <span>{profile.college}</span>
                   </p>
                 )}
@@ -58,7 +58,7 @@ export default function MemberList({ members, ownerId, currentUserId, onRemove }
                   type="button"
                   onClick={() => onRemove(member.profile_id || profile.id)}
                   className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-rose-50 text-slate-400 hover:text-rose-600 transition-colors cursor-pointer"
-                  title="Remove member"
+                  title="Remove member from team"
                   aria-label="Remove member"
                 >
                   <UserMinus className="w-4 h-4" />

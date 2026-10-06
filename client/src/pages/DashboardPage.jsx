@@ -22,8 +22,8 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <PageLayout title="Dashboard" description="Loading your project workspace...">
-        <div className="space-y-6">
+      <PageLayout title="Dashboard" description="Loading your workspace...">
+        <div className="space-y-6 w-full">
           <Skeleton className="w-full h-36 rounded-2xl" />
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Skeleton className="h-28 rounded-2xl" />
@@ -42,12 +42,12 @@ export default function DashboardPage() {
   if (!data) {
     return (
       <PageLayout title="Dashboard" description="Overview of your collaboration activity">
-        <div className="text-center py-20 bg-white rounded-2xl border border-slate-200 p-8">
+        <div className="text-center py-20 bg-white rounded-2xl border border-slate-200 p-8 w-full">
           <p className="text-slate-500 text-sm mb-4">Failed to load dashboard data.</p>
           <button
             type="button"
             onClick={() => window.location.reload()}
-            className="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold"
+            className="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors cursor-pointer"
           >
             Retry
           </button>
@@ -65,30 +65,30 @@ export default function DashboardPage() {
       actions={
         <Link
           to="/projects/new"
-          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-semibold hover:bg-slate-800 transition-all shadow-xs"
+          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-semibold hover:bg-slate-800 transition-all shadow-xs shrink-0"
         >
           <Plus className="w-3.5 h-3.5" />
           <span>New Project</span>
         </Link>
       }
     >
-      <div className="space-y-6 sm:space-y-8 overflow-x-hidden">
+      <div className="space-y-6 sm:space-y-8 w-full overflow-x-hidden">
         {/* Welcome Hero Banner */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
-          <div className="max-w-xl relative z-10">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200/70 mb-3">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-7 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative overflow-hidden">
+          <div className="max-w-xl">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 mb-3">
               <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-              <span>Final-Year Collaboration Workspace</span>
+              <span>Final-Year Capstone Hub</span>
             </div>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight leading-tight">
               Ready to collaborate, {studentName}?
             </h2>
             <p className="text-xs sm:text-sm text-slate-500 mt-2 leading-relaxed font-normal">
-              Browse algorithm-ranked projects matching your tech stack or review pending applications to your capstone initiatives.
+              Browse algorithm-ranked projects matching your technical stack or review pending applications to your capstone initiatives.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto shrink-0 relative z-10">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto shrink-0">
             <Link
               to="/matches"
               className="inline-flex items-center justify-center gap-1.5 h-9.5 px-4 rounded-xl bg-slate-900 text-white text-xs sm:text-sm font-semibold hover:bg-slate-800 transition-all shadow-xs"
@@ -110,9 +110,9 @@ export default function DashboardPage() {
         <StatsOverview stats={data.stats} />
 
         {/* 2-Column Split: Active Projects & Incoming Requests */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
           {/* Active Projects Card */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-base font-bold text-slate-900 tracking-tight">My Projects</h3>
@@ -132,7 +132,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Incoming Requests Card */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h3 className="text-base font-bold text-slate-900 tracking-tight">Incoming Join Requests</h3>
@@ -146,7 +146,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Recommended Projects Section */}
-        <div className="space-y-4">
+        <div className="space-y-4 w-full">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <h3 className="text-base sm:text-lg font-bold text-slate-900 tracking-tight flex items-center gap-2">
@@ -170,7 +170,7 @@ export default function DashboardPage() {
 
         {/* Outgoing Applications Section */}
         {data.outgoingRequests?.length > 0 && (
-          <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs">
+          <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs w-full">
             <div className="mb-4">
               <h3 className="text-base font-bold text-slate-900 tracking-tight">My Sent Applications</h3>
               <p className="text-xs text-slate-400 font-normal mt-0.5">Projects you requested to join</p>

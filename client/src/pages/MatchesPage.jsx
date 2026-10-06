@@ -55,7 +55,6 @@ export default function MatchesPage() {
     if (!selectedProjectId) return;
 
     let isMounted = true;
-    // Set loading asynchronously
     const timer = setTimeout(() => {
       if (isMounted) setLoadingCollaborators(true);
     }, 0);
@@ -83,7 +82,7 @@ export default function MatchesPage() {
       title="Smart Matches"
       description="Discover projects and collaborators ranked by verified skill compatibility"
       actions={
-        <div className="flex items-center rounded-xl bg-white border border-slate-200/90 p-0.5 sm:p-1 shadow-xs shrink-0">
+        <div className="flex items-center rounded-xl bg-white border border-slate-200 p-1 shadow-xs shrink-0">
           <button
             type="button"
             onClick={() => setTab('projects')}
@@ -111,7 +110,7 @@ export default function MatchesPage() {
         </div>
       }
     >
-      <div className="space-y-6 overflow-x-hidden">
+      <div className="space-y-6 w-full overflow-x-hidden">
         {tab === 'projects' ? (
           /* Projects Matching Current User */
           <div>
@@ -125,7 +124,7 @@ export default function MatchesPage() {
               <EmptyState
                 icon={Sparkles}
                 title="No project matches found"
-                description="Make sure you have added technical skills to your profile so our matching engine can calculate compatibility."
+                description="Add technical skills to your profile so our matching engine can calculate compatibility."
               >
                 <Link
                   to="/profile"
@@ -136,7 +135,7 @@ export default function MatchesPage() {
                 </Link>
               </EmptyState>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
                 {recommendedProjects.map((project) => (
                   <ProjectCard
                     key={project.id}
@@ -165,9 +164,9 @@ export default function MatchesPage() {
                 </Link>
               </EmptyState>
             ) : (
-              <div className="space-y-6">
-                {/* Project selector card */}
-                <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="space-y-6 w-full">
+                {/* Project selector dropdown */}
+                <div className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
                   <div className="w-full md:w-auto">
                     <label
                       htmlFor="project-select"
@@ -180,7 +179,7 @@ export default function MatchesPage() {
                         id="project-select"
                         value={selectedProjectId}
                         onChange={(e) => setSelectedProjectId(e.target.value)}
-                        className="w-full md:w-96 h-10 px-3.5 pr-10 bg-slate-50 border border-slate-200/90 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 cursor-pointer appearance-none shadow-xs"
+                        className="w-full md:w-96 h-10 px-3.5 pr-10 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-900 cursor-pointer appearance-none shadow-xs"
                       >
                         {myProjects.map((p) => (
                           <option key={p.id} value={p.id}>
@@ -192,7 +191,7 @@ export default function MatchesPage() {
                     </div>
                   </div>
                   <div className="text-xs text-slate-500 font-normal">
-                    Ranking candidate peers based on required skills defined in this project
+                    Ranking candidates based on required skills defined in this project
                   </div>
                 </div>
 
@@ -209,13 +208,13 @@ export default function MatchesPage() {
                     description="No student developers currently match the skills required for this project. Check if your project has skills assigned."
                   />
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
                     {recommendedCollaborators.map((candidate) => {
                       const candidateName = candidate.full_name || 'Candidate';
                       return (
                         <div
                           key={candidate.id}
-                          className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs hover:border-slate-300 hover:shadow-md transition-all duration-200 flex flex-col justify-between group"
+                          className="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-xs hover:border-slate-300 hover:shadow-sm transition-all duration-200 flex flex-col justify-between group"
                         >
                           <div>
                             {/* Header */}
@@ -238,8 +237,8 @@ export default function MatchesPage() {
                                   </h3>
                                   {candidate.college && (
                                     <p className="text-xs text-slate-400 font-normal truncate flex items-center gap-1">
-                                      <GraduationCap className="w-3 h-3 text-slate-400" />
-                                      <span>{candidate.college}</span>
+                                      <GraduationCap className="w-3 h-3 text-slate-400 shrink-0" />
+                                      <span className="truncate">{candidate.college}</span>
                                     </p>
                                   )}
                                 </div>
@@ -248,9 +247,9 @@ export default function MatchesPage() {
                               <span
                                 className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold tabular-nums border shrink-0 ${
                                   candidate.match_score >= 75
-                                    ? 'bg-emerald-50/80 text-emerald-700 border-emerald-200/70'
+                                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                                     : candidate.match_score >= 50
-                                    ? 'bg-blue-50/80 text-blue-700 border-blue-200/70'
+                                    ? 'bg-blue-50 text-blue-700 border-blue-200'
                                     : 'bg-slate-100 text-slate-700 border-slate-200'
                                 }`}
                               >

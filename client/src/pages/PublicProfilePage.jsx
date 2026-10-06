@@ -30,7 +30,7 @@ export default function PublicProfilePage() {
   if (loading) {
     return (
       <PageLayout title="Developer Profile" description="Loading profile...">
-        <div className="max-w-3xl mx-auto space-y-4">
+        <div className="max-w-3xl mx-auto space-y-4 w-full">
           <Skeleton className="w-full h-40 rounded-2xl" />
           <Skeleton className="w-full h-64 rounded-2xl" />
         </div>
@@ -41,14 +41,14 @@ export default function PublicProfilePage() {
   if (!profile) {
     return (
       <PageLayout title="Profile Not Found" description="The requested developer profile does not exist">
-        <div className="text-center py-20 bg-white rounded-2xl border border-slate-200 p-8 max-w-xl mx-auto">
+        <div className="text-center py-20 bg-white rounded-2xl border border-slate-200 p-8 max-w-xl mx-auto w-full">
           <p className="text-slate-500 text-sm mb-4">This profile does not exist or has been removed.</p>
           <Link
             to="/matches"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            Back to Matches
+            <span>Back to Matches</span>
           </Link>
         </div>
       </PageLayout>
@@ -64,16 +64,16 @@ export default function PublicProfilePage() {
       actions={
         <Link
           to="/matches"
-          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-all shadow-xs"
+          className="inline-flex items-center gap-1.5 h-9 px-3.5 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-all shadow-xs shrink-0"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Matches</span>
         </Link>
       }
     >
-      <div className="max-w-3xl mx-auto space-y-6 overflow-x-hidden">
+      <div className="max-w-3xl mx-auto space-y-6 w-full overflow-x-hidden">
         {/* Main Profile Card */}
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs">
+        <div className="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-xs w-full">
           {/* Header */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-5 pb-6 border-b border-slate-100">
             <div className="w-18 h-18 rounded-2xl bg-slate-900 text-white border border-slate-200 flex items-center justify-center shrink-0 overflow-hidden shadow-xs text-xl font-bold">
